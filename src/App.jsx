@@ -3,6 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import Login from "./page/Login.jsx";
 import Register from "./page/Register.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Dashboard from "./page/Dasboard.jsx";
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
           <Routes>
               <Route path="/" element={<Login />} />
               <Route path="register" element={<Register />} />
+              <Route path="dashboard" element={<Dashboard/>}/>
           </Routes>
       </BrowserRouter>
   )
