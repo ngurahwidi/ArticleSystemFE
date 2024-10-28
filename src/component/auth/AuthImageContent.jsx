@@ -1,4 +1,4 @@
-const LoginImageContent = () => {
+const AuthImageContent = () => {
     return (
         <div style={{top: "682px", left: "75px"}} className="position-absolute text-white">
             <p style={{fontSize: "24px"}}>-
@@ -8,4 +8,4 @@ const LoginImageContent = () => {
     )
 }
 
-export default LoginImageContent;
+export default AuthImageContent;

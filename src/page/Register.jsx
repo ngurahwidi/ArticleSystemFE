@@ -2,10 +2,10 @@ import logo from '../assets/image/logo-vertical.svg'
 import Label from "../component/Label.jsx";
 import Input from "../component/Input.jsx";
 import {BtnWarning, BtnWarningOutline} from "../component/Button.jsx";
-import LoginImage from "../component/login/LoginImage.jsx";
-import LoginImageContent from "../component/login/LoginImageContent.jsx";
-import FormHeader from "../component/login/FormHeader.jsx";
-import FormFooter from "../component/login/FormFooter.jsx";
+import AuthImage from "../component/auth/AuthImage.jsx";
+import AuthImageContent from "../component/auth/AuthImageContent.jsx";
+import FormHeader from "../component/auth/FormHeader.jsx";
+import FormFooter from "../component/auth/FormFooter.jsx";
 
 const Register = () => {
     return (
@@ -40,8 +40,8 @@ const Register = () => {
                     <FormFooter/>
                 </div>
                 <div className="image-container w-75 overflow-hidden rounded-5 m-3 position-relative">
-                    <LoginImage/>
-                    <LoginImageContent/>
+                    <AuthImage/>
+                    <AuthImageContent/>
                 </div>
             </div>
         </>

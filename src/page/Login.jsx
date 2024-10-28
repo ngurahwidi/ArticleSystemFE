@@ -2,10 +2,10 @@ import {BtnWarning, BtnWarningOutline} from "../component/Button.jsx";
 import Input from "../component/Input.jsx";
 import Label from "../component/Label.jsx";
 import logo from "../assets/image/logo-vertical.svg"
-import FormHeader from "../component/login/FormHeader.jsx";
-import FormFooter from "../component/login/FormFooter.jsx";
-import LoginImage from "../component/login/LoginImage.jsx";
-import LoginImageContent from "../component/login/LoginImageContent.jsx";
+import FormHeader from "../component/auth/FormHeader.jsx";
+import FormFooter from "../component/auth/FormFooter.jsx";
+import AuthImage from "../component/auth/AuthImage.jsx";
+import AuthImageContent from "../component/auth/AuthImageContent.jsx";
 
 const Login = () => {
     return (
@@ -37,8 +37,8 @@ const Login = () => {
                 </div>
 
                 <div className="image-container overflow-hidden w-75 rounded-5 m-3 position-relative">
-                    <LoginImage/>
-                    <LoginImageContent/>
+                    <AuthImage/>
+                    <AuthImageContent/>
                 </div>
             </div>
         </>
