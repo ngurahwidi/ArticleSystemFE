@@ -1,5 +1,5 @@
-import logo from "../../assets/image/logo-hitam.svg";
-import logosmall from "../../assets/image/logo-small.svg";
+import logo from "../../../assets/image/logo-hitam.svg";
+import logosmall from "../../../assets/image/logo-small.svg";
 
 const SidebarLogo = ({isExpanded}) => {
     return (

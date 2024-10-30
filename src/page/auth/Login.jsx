@@ -1,17 +1,17 @@
-import {BtnWarning, BtnWarningOutline} from "../component/Button.jsx";
-import Input from "../component/Input.jsx";
-import Label from "../component/Label.jsx";
-import logo from "../assets/image/logo-vertical.svg"
-import FormHeader from "../component/auth/FormHeader.jsx";
-import FormFooter from "../component/auth/FormFooter.jsx";
-import AuthImage from "../component/auth/AuthImage.jsx";
-import AuthImageContent from "../component/auth/AuthImageContent.jsx";
+import {BtnWarning, BtnWarningOutline} from "../../component/Button.jsx";
+import Input from "../../component/Input.jsx";
+import Label from "../../component/Label.jsx";
+import logo from "../../assets/image/logo-vertical.svg"
+import FormHeader from "./component/FormHeader.jsx";
+import FormFooter from "./component/FormFooter.jsx";
+import AuthImage from "./component/AuthImage.jsx";
+import AuthImageContent from "./component/AuthImageContent.jsx";
 
 const Login = () => {
     return (
         <>
             <div className="d-flex justify-content-between align-items-center gap-5">
-                <div className="content-container d-flex flex-column justify-content-between ps-5">
+                <div className="auth-container d-flex flex-column justify-content-between ps-5">
                     <div className="mt-3 ms-5 mb-5">
                         <img src={logo} alt="logo"/>
                     </div>
@@ -26,7 +26,7 @@ const Login = () => {
                             <Input type="password" id="password" placeholder="password"/>
                         </div>
                         <div className="text-center mb-5">
-                            <BtnWarning>Login</BtnWarning>
+                            <BtnWarning className="w-100 btn btn-warning px-4 rounded-3 py-2">Login</BtnWarning>
                         </div>
                         <div>
                             <p className="text-center fw-light">Or Sign In Using</p>

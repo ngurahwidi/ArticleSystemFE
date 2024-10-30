@@ -1,11 +1,22 @@
 $height-login: 1024px;
 $width-login: 624px;
 
-.content-container {
+.auth-container {
   height: $height-login;
   width: $width-login;
 }
 
 .image-container {
   height: $height-login;
+}
+
+.image-content{
+  top: 682px;
+  left: 75px;
+  p {
+    font-size: 24px;
+  }
+  h1 {
+    font-size: 34px;
+  }
 }

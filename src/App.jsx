@@ -1,14 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import Login from "./page/Login.jsx";
-import Register from "./page/Register.jsx";
+import Login from "./page/auth/Login.jsx";
+import Register from "./page/auth/Register.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Dashboard from "./page/Layout.jsx";
-import Article from "./page/Article.jsx";
-import Tag from "./page/Tag.jsx";
+import Dashboard from "./page/Dashboard.jsx";
+import Article from "./page/article/Article.jsx";
+import Tag from "./page/tag/Tag.jsx";
 import Home from "./page/Home.jsx";
-import Category from "./page/Category.jsx";
-import Comment from "./page/Comment.jsx";
+import Category from "./page/category/Category.jsx";
+import Comment from "./page/comment/Comment.jsx";
 
 function App() {
 

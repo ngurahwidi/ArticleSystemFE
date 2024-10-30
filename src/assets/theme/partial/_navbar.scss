@@ -1,0 +1,20 @@
+.dashboard-container {
+  width: 100%;
+  position: relative;
+  min-height: 100%;
+}
+
+.nav {
+  transition: left 0.3s;
+  z-index: 2;
+}
+
+.toggle-container {
+  cursor: pointer;
+}
+
+.content-container {
+  padding-top: 84px;
+  transition: padding-left 0.3s;
+  //padding-left: 240px;
+}
