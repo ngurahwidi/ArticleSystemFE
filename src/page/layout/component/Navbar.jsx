@@ -1,4 +1,4 @@
-import {Notification} from "iconsax-react";
+import {Notification, Logout} from "iconsax-react";
 import avatar from "../../../assets/image/avatar.svg";
 
 const Navbar = ({isSidebarExpanded, onClick, toggleImage, dropdown}) => {
@@ -14,7 +14,7 @@ const Navbar = ({isSidebarExpanded, onClick, toggleImage, dropdown}) => {
             <div className="d-flex align-items-center p-4">
                 <div className="me-4 cursor-pointer"><Notification size="25" color="#4B3D02" variant="Bulk"/></div>
                 <div className="rounded-5 overflow-hidden me-2 cursor-pointer"><img src={avatar}/></div>
-                <div><img className="cursor-pointer" src={dropdown}/></div>
+                <Logout color="#4B3D02" onClick={dropdown}/>
             </div>
         </nav>
     )

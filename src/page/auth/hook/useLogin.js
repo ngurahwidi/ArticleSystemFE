@@ -18,7 +18,7 @@ const useLogin = () => {
             })
             if (response.status === 200 && response.data.result.token) {
                 localStorage.setItem('token', response.data.result.token)
-                localStorage.setItem('username', response.data.username)
+                localStorage.setItem('username', response.data.result.username)
 
                 console.log("Login succes")
                 navigate('/')

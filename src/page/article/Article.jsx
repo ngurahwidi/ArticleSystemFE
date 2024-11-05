@@ -4,7 +4,7 @@ import useFetch from "../../hook/useFetch.js";
 
 const Article = () => {
     const token = localStorage.getItem("token");
-    const username = localStorage.getItem("user");
+    const username = localStorage.getItem("username");
     const url = 'http://127.0.0.1:8000/api/web/v1/articles'
 
     const {data: articles, loading, error} = useFetch(url, token, "GET")
