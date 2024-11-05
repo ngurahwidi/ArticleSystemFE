@@ -1,7 +1,8 @@
-$height-login: 1024px;
+$height-login: 900px;
 $width-login: 624px;
 
 .auth-container {
+  min-height: 100vh;
   height: $height-login;
   width: $width-login;
 }
