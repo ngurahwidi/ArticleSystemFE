@@ -7,6 +7,7 @@ import AuthImageContent from "./component/AuthImageContent.jsx";
 import {NavLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import axios from "axios";
+import useRegister from "./hook/useRegister.js";
 
 const Register = () => {
     const [username, setUsername] = useState("");
@@ -19,6 +20,7 @@ const Register = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const {register} = useRegister()
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -36,20 +38,18 @@ const Register = () => {
         }
 
         setLoading(true);
+
+        const userData = {
+            username,
+            email,
+            password,
+            phone,
+            bio,
+            roleId,
+            profile,
+        }
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/web/v1/articles/auths/register', {
-                username,
-                email,
-                password,
-                phone,
-                bio,
-                roleId,
-                profile,
-            }, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            });
+            const response = await register(userData);
 
             console.log("User  registered successfully:", response.data);
             navigate("/login");
