@@ -6,7 +6,6 @@ import AuthImage from "./component/AuthImage.jsx";
 import AuthImageContent from "./component/AuthImageContent.jsx";
 import {NavLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
-import axios from "axios";
 import useRegister from "./hook/useRegister.js";
 
 const Register = () => {
