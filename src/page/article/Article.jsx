@@ -68,7 +68,11 @@ const Article = () => {
             });
             setArticles(response.data.result);
         } catch (err) {
-            setError(err.response.data.status.message);
+            if (err.response && err.response.status === 401) {
+                localStorage.clear()
+            } else {
+                setError(err.response.data.status.message);
+            }
         } finally {
             setLoading(false);
         }
@@ -84,7 +88,11 @@ const Article = () => {
 
             setCategories(response.data.result);
         } catch (err) {
-            setError(err.response.data.status.message);
+            if (err.response && err.response.status === 401) {
+                localStorage.clear()
+            } else {
+                setError(err.response.data.status.message);
+            }
         }
     }
 
@@ -97,7 +105,11 @@ const Article = () => {
             })
             setTags(response.data.result);
         } catch (err) {
-            setError(err.response.data.status.message);
+            if (err.response && err.response.status.code === 401) {
+                localStorage.clear()
+            } else {
+                setError(err.response.data.status.message);
+            }
         }
     }
 
@@ -125,6 +137,7 @@ const Article = () => {
                             onChange={(e) => handleFilterChange('search', e.target.value)}
                         />
                     </div>
+
                     <div className="col">
                         <Label>Status</Label>
                         <select
@@ -149,7 +162,7 @@ const Article = () => {
                             <option value="">Select Category</option>
                             {categories.map(category => (
                                 <option key={category.id} value={category.id}>
-                                {category.name}
+                                    {category.name}
                                 </option>
                             ))}
                         </select>

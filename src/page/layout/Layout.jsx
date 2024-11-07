@@ -1,39 +1,23 @@
 import hamburger from '../../assets/image/hamburger-menu.svg'
-import {Outlet, useNavigate} from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import {useState} from "react";
 import Sidebar from "./component/Sidebar.jsx";
 import Navbar from "./component/Navbar.jsx";
-import axios from "axios";
+import useLogout from "../../hook/useLogout.js";
 
 const Layout = () => {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
-    const navigate = useNavigate()
-    const token = localStorage.getItem('token');
+    const logout = useLogout()
 
     const toggleSidebar = () => {
         setIsSidebarExpanded(prevState => !prevState);
         console.log(isSidebarExpanded)
     }
 
-    const handleLogout = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://127.0.0.1:8000/api/web/v1/articles/auths/logout', {}, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            localStorage.clear()
-            console.log("logged out", response)
-            navigate('/login')
-        } catch (error) {
-            console.log(error);
-        }
-    }
     return (
         <>
             <Sidebar isExpanded={isSidebarExpanded}/>
-            <Navbar isSidebarExpanded={isSidebarExpanded} onClick={toggleSidebar} toggleImage={hamburger} dropdown={handleLogout}/>
+            <Navbar isSidebarExpanded={isSidebarExpanded} onClick={toggleSidebar} toggleImage={hamburger} logout={logout}/>
 
             <div className="dashboard-container">
 
