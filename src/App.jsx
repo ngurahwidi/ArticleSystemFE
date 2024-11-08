@@ -11,6 +11,7 @@ import Category from "./page/category/Category.jsx";
 import Comment from "./page/comment/Comment.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import AuthRoute from "./AuthRoute.jsx";
+import ArticleAdd from "./page/article/ArticleAdd.jsx";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
                   <Route path="/" element={<Dashboard/>}>
                       <Route index element={<Home/>}/>
                       <Route path="article" element={<Article/>} />
+                      <Route path="article/add" element={<ArticleAdd />} />
                       <Route path="tag" element={<Tag/>}/>
                       <Route path="category" element={<Category/>}/>
                       <Route path="comment" element={<Comment/>}/>

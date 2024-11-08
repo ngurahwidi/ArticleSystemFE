@@ -2,8 +2,47 @@ import logo from "../../../assets/image/avatar.svg";
 import BtnDetail from "../../../component/BtnDetail.jsx"
 import BtnDelete from "../../../component/BtnDelete.jsx";
 import BtnEdit from "../../../component/BtnEdit.jsx";
+import Swal from "sweetalert2";
+import axios from "axios";
 
-const ArticleList = ({ datas }) => {
+const ArticleList = ({ datas, fetchArticles }) => {
+    const token = localStorage.getItem("token");
+
+    const handleDelete = async (id) => {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the article.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await axios.delete(`http://127.0.0.1:8000/api/web/v1/articles/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
+
+                Swal.fire(
+                    'Deleted!',
+                    'The article has been deleted.',
+                    'success'
+                )
+
+                fetchArticles()
+            } catch (err) {
+                Swal.fire(
+                    'Error!',
+                    'There was an error deleting the article.!',
+                    'error'
+                )
+            }
+        }
+    }
     return (
         <tbody>
         {datas.map((data, index) => (
@@ -23,7 +62,7 @@ const ArticleList = ({ datas }) => {
                 <td>
                     <BtnDetail />
                     <BtnEdit />
-                    <BtnDelete />
+                    <BtnDelete onClick={() => handleDelete(data.id)} />
                 </td>
             </tr>
         ))}

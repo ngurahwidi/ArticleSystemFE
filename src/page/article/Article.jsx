@@ -4,15 +4,19 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import { format, parseISO, isValid } from 'date-fns';
 import Label from "../../component/Label.jsx";
+import Select from "react-select";
+import {useNavigate} from "react-router-dom";
+import {AddCircle} from "iconsax-react";
 
 const Article = () => {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
+    const navigate = useNavigate();
     const [filters, setFilters] = useState({
         search: '',
         statusId: '',
         categoryIds: [],
-        tagsIds: [],
+        tagIds: [],
         sortByDate: '',
         sortByPopular: '',
         fromDate: '',
@@ -23,6 +27,26 @@ const Article = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedTags, setSelectedTags] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState([])
+
+    const handleTagChange = (selectedOptions) => {
+        const tagIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
+        setSelectedTags(selectedOptions);
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            tagIds: tagIds,
+        }));
+    };
+
+    const handleCategoryChange = (selectedOptions) => {
+        const categoryIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
+        setSelectedCategory(selectedOptions);
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            categoryIds: categoryIds,
+        }));
+    };
 
     const handleFilterChange = (key, value) => {
         setFilters((prevFilters) => ({
@@ -30,15 +54,6 @@ const Article = () => {
             [key]: value
         }))
     }
-
-    const handleMultiSelectChange = (key, selectedOptions) => {
-        const values = Array.from(selectedOptions, (option) => option.value);
-        console.log(values);
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            [key]: values
-        }));
-    };
 
     // const {data: articles, loading, error} = useFetch(url, token, "GET")
 
@@ -86,7 +101,9 @@ const Article = () => {
                 }
             })
 
-            setCategories(response.data.result);
+            setCategories(response.data.result.map((category) => {
+                return {value: category.id, label: category.name};
+            }));
         } catch (err) {
             if (err.response && err.response.status === 401) {
                 localStorage.clear()
@@ -103,7 +120,9 @@ const Article = () => {
                     Authorization: `Bearer ${token}`,
                 }
             })
-            setTags(response.data.result);
+            setTags(response.data.result.map((tag) => {
+                return {value: tag.id.toString(), label: tag.name}
+            }));
         } catch (err) {
             if (err.response && err.response.status.code === 401) {
                 localStorage.clear()
@@ -127,7 +146,7 @@ const Article = () => {
             <h1>Hello {username}</h1>
             <p>This is the article page</p>
             <div className="container mb-5">
-                <div className="row">
+                <div className="row mb-4">
                     <div className="col">
                         <Label>Search</Label>
                         <input
@@ -151,38 +170,27 @@ const Article = () => {
                             <option value="3">Archived</option>
                         </select>
                     </div>
-                    <div className="col">
-                        <Label>Category</Label>
-                        <select
-                            className="form-control"
-                            multiple
-                            value={filters.categoryIds}
-                            onChange={(e) => handleMultiSelectChange('categoryIds', e.target.selectedOptions)}
-                        >
-                            <option value="">Select Category</option>
-                            {categories.map(category => (
-                                <option key={category.id} value={category.id}>
-                                    {category.name}
-                                </option>
-                            ))}
-                        </select>
+
+                    <div className='col'>
+                        <Label>Tag</Label>
+                        <Select
+                            value={selectedTags}
+                            onChange={handleTagChange}
+                            options={tags}
+                            placeholder='Select tag'
+                            isMulti
+                        />
                     </div>
 
                     <div className="col">
-                        <Label>Tag</Label>
-                        <select
-                            className="form-control"
-                            multiple
-                            value={filters.tagsIds}
-                            onChange={(e) => handleMultiSelectChange('tagsIds', e.target.selectedOptions)}
-                        >
-                            <option value="">Select Tag</option>
-                            {tags.map(tag => (
-                                <option key={tag.id} value={tag.id}>
-                                    {tag.name}
-                                </option>
-                            ))}
-                        </select>
+                        <Label>Category</Label>
+                        <Select
+                            options={categories}
+                            value={selectedCategory}
+                            onChange={handleCategoryChange}
+                            placeholder='Select Category'
+                            isMulti
+                        />
                     </div>
                 </div>
                 <div className='row'>
@@ -234,10 +242,13 @@ const Article = () => {
                 </div>
             </div>
 
+            <div className='mb-4'>
+                <button className="btn btn-primary px-4 py-1" onClick={() => navigate('/article/add')}><AddCircle color="#d9e3f0"/></button>
+            </div>
 
             <table className="table table-bordered">
                 <THead titles={["No", "Feature Image", "Title", "Description", "Status", "Popular", "Action"]}/>
-                <ArticleList datas={articles}/>
+                <ArticleList datas={articles} fetchArticles={fetchArticles} />
             </table>
         </div>
     );
