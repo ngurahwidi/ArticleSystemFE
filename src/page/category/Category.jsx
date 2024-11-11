@@ -13,9 +13,6 @@ const Category = () => {
 
     return (
         <div>
-            <h1>Hello widi</h1>
-            <p>This is category page</p>
-
             <table className="table table-bordered">
                 <THead titles={['No', 'Name', 'Icon', 'Status', 'Action']} />
                 <CategoryList datas={category}/>

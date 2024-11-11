@@ -13,9 +13,6 @@ const Tag = () => {
 
     return (
         <div>
-            <h1>Hello Widi</h1>
-            <p>This is tag page</p>
-
             <table className="table table-bordered">
                 <THead titles={['No', 'Name', 'Icon', 'Status', 'Action']} />
                 <TagList datas={tag}/>

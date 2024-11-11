@@ -7,10 +7,12 @@ import Label from "../../component/Label.jsx";
 import Select from "react-select";
 import {useNavigate} from "react-router-dom";
 import {AddCircle} from "iconsax-react";
+import {articlePath} from "../../path/crudPath.js";
+import articleService from "../../service/api/articleService.js";
+import categoryService from "../../service/api/categoryService.js";
 
 const Article = () => {
     const token = localStorage.getItem("token");
-    const username = localStorage.getItem("username");
     const navigate = useNavigate();
     const [filters, setFilters] = useState({
         search: '',
@@ -30,6 +32,17 @@ const Article = () => {
     const [selectedTags, setSelectedTags] = useState([])
     const [selectedCategory, setSelectedCategory] = useState([])
 
+    const handleChange = (e) => {
+        const {name, value} = e.target
+
+        setFilters((prevState) => {
+            const newUpdateState = {...prevState}
+            newUpdateState[name] = value;
+
+            return newUpdateState;
+        })
+    }
+
     const handleTagChange = (selectedOptions) => {
         const tagIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
         setSelectedTags(selectedOptions);
@@ -48,46 +61,28 @@ const Article = () => {
         }));
     };
 
-    const handleFilterChange = (key, value) => {
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            [key]: value
-        }))
-    }
-
-    // const {data: articles, loading, error} = useFetch(url, token, "GET")
-
     const fetchArticles = async () => {
         setLoading(true);
         setError(null);
-        const url = 'http://127.0.0.1:8000/api/web/v1/articles';
+        const params = {
+            ...(filters.fromDate && isValid(parseISO(filters.fromDate)) && {
+            fromDate: format(parseISO(filters.fromDate), 'dd/MM/yyyy').toString()
+            }),
+            ...(filters.toDate && isValid(parseISO(filters.toDate)) && {
+            toDate: format(parseISO(filters.toDate), 'dd/MM/yyyy').toString()
+        }),
+            ...(filters.search && { search: filters.search }),
+            ...(filters.statusId && { statusId: filters.statusId }),
+            ...(filters.categoryIds && { categoryIds: filters.categoryIds.join(',') }),
+            ...(filters.tagIds && { tagIds: filters.tagIds.join(',') }),
+            ...(filters.sortByDate && { sort_by_date: filters.sortByDate }),
+            ...(filters.sortByPopular && { sort_by_popular: filters.sortByPopular }),
+    }
         try {
-            const response = await axios.get(url, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                params: {
-                    ...(filters.fromDate && isValid(parseISO(filters.fromDate)) && {
-                        fromDate: format(parseISO(filters.fromDate), 'dd/MM/yyyy').toString()
-                    }),
-                    ...(filters.toDate && isValid(parseISO(filters.toDate)) && {
-                        toDate: format(parseISO(filters.toDate), 'dd/MM/yyyy').toString()
-                    }),
-                    ...(filters.search && { search: filters.search }),
-                    ...(filters.statusId && { statusId: filters.statusId }),
-                    ...(filters.categoryIds && { categoryIds: filters.categoryIds.join(',') }),
-                    ...(filters.tagIds && { tagIds: filters.tagIds.join(',') }),
-                    ...(filters.sortByDate && { sort_by_date: filters.sortByDate }),
-                    ...(filters.sortByPopular && { sort_by_popular: filters.sortByPopular }),
-                }
-            });
+            const response = await articleService.getArticles(params);
             setArticles(response.data.result);
         } catch (err) {
-            if (err.response && err.response.status === 401) {
-                localStorage.clear()
-            } else {
-                setError(err.response.data.status.message);
-            }
+            setError(err.response.data.status.message);
         } finally {
             setLoading(false);
         }
@@ -95,21 +90,13 @@ const Article = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/web/v1/articles/components/categories', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
+            const response = await categoryService.getCategory()
 
             setCategories(response.data.result.map((category) => {
                 return {value: category.id, label: category.name};
             }));
         } catch (err) {
-            if (err.response && err.response.status === 401) {
-                localStorage.clear()
-            } else {
-                setError(err.response.data.status.message);
-            }
+            setError(err.response.data.status.message);
         }
     }
 
@@ -134,26 +121,22 @@ const Article = () => {
 
     useEffect(() => {
         fetchArticles();
-        fetchCategories()
-        fetchTags()
-    }, [filters]);
-
-    if (loading) return <p>Loading articles...</p>;
-    if (error) return <p>{error}</p>;
+        fetchCategories();
+        fetchTags();
+    }, [])
 
     return (
-        <div>
-            <h1>Hello {username}</h1>
-            <p>This is the article page</p>
-            <div className="container mb-5">
+        <>
+            <div className="mb-5">
                 <div className="row mb-4">
                     <div className="col">
                         <Label>Search</Label>
                         <input
                             className="form-control"
                             placeholder="Type to search..."
+                            name="search"
                             value={filters.search}
-                            onChange={(e) => handleFilterChange('search', e.target.value)}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -162,7 +145,8 @@ const Article = () => {
                         <select
                             className="form-control text-secondary"
                             value={filters.statusId}
-                            onChange={(e) => handleFilterChange('statusId', e.target.value)}
+                            name='statusId'
+                            onChange={handleChange}
                         >
                             <option value="">Select Status Option</option>
                             <option value="1">Draft</option>
@@ -177,7 +161,7 @@ const Article = () => {
                             value={selectedTags}
                             onChange={handleTagChange}
                             options={tags}
-                            placeholder='Select tag'
+                            placeholder='Tag'
                             isMulti
                         />
                     </div>
@@ -188,7 +172,7 @@ const Article = () => {
                             options={categories}
                             value={selectedCategory}
                             onChange={handleCategoryChange}
-                            placeholder='Select Category'
+                            placeholder='Category'
                             isMulti
                         />
                     </div>
@@ -198,8 +182,9 @@ const Article = () => {
                         <Label>Sort By Date</Label>
                         <select
                             className="form-control text-secondary"
+                            name='sortByDate'
                             value={filters.sortByDate}
-                            onChange={(e) => handleFilterChange('sortByDate', e.target.value)}
+                            onChange={handleChange}
                         >
                             <option value="">Select Sort Date Option</option>
                             <option value="asc">Ascending</option>
@@ -211,8 +196,9 @@ const Article = () => {
                         <Label>Sort By Popular</Label>
                         <select
                             className="form-control text-secondary"
+                            name='sortByPopular'
                             value={filters.sortByPopular}
-                            onChange={(e) => handleFilterChange('sortByPopular', e.target.value)}
+                            onChange={handleChange}
                         >
                             <option value="">Select Popularity Option</option>
                             <option value="desc">Most Popular</option>
@@ -224,9 +210,10 @@ const Article = () => {
                         <Label>From Date</Label>
                         <input
                             type="date"
+                            name='fromDate'
                             className="form-control text-secondary"
                             value={filters.fromDate}
-                            onChange={(e) => handleFilterChange('fromDate', e.target.value)}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -234,23 +221,39 @@ const Article = () => {
                         <Label>To Date</Label>
                         <input
                             type="date"
+                            name='toDate'
                             className="form-control text-secondary"
                             value={filters.toDate}
-                            onChange={(e) => handleFilterChange('toDate', e.target.value)}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
+                <button type='button' onClick={fetchArticles}
+                        className='btn btn-sm btn-outline-warning px-4 py-1 mt-3'>Search
+                </button>
             </div>
 
             <div className='mb-4'>
-                <button className="btn btn-primary px-4 py-1" onClick={() => navigate('/article/add')}><AddCircle color="#d9e3f0"/></button>
+                <button className="btn btn-warning px-4 py-1" onClick={() => navigate(articlePath.add)}><AddCircle
+                    color="#d9e3f0"/></button>
             </div>
-
             <table className="table table-bordered">
                 <THead titles={["No", "Feature Image", "Title", "Description", "Status", "Popular", "Action"]}/>
-                <ArticleList datas={articles} fetchArticles={fetchArticles} />
+                <tbody>
+                {error ? (
+                    <tr>
+                        <td colSpan='7' className='text-center text-danger'>{error}</td>
+                    </tr>
+                ) : loading ? (
+                    <td>
+                        <td colSpan='7' className='text-center'>Loading...</td>
+                    </td>
+                ) : (
+                    <ArticleList datas={articles} fetchArticles={fetchArticles}/>
+                )}
+                </tbody>
             </table>
-        </div>
+        </>
     );
 };
 

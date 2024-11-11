@@ -12,6 +12,11 @@ import Comment from "./page/comment/Comment.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import AuthRoute from "./AuthRoute.jsx";
 import ArticleAdd from "./page/article/ArticleAdd.jsx";
+import ArticleDetail from "./page/article/ArticleDetail.jsx";
+import ArticleEdit from "./page/article/ArticleEdit.jsx";
+import {loginPath, registerPath} from "./path/authPath.js";
+import {articlePath, categoryPath, tagPath} from "./path/crudPath.js";
+import Layout from "./page/layout/Layout.jsx";
 
 function App() {
 
@@ -19,7 +24,7 @@ function App() {
       <BrowserRouter>
           <Routes>
               <Route
-                  path="login"
+                  path={loginPath}
                   element={
                       <ProtectedRoute>
                           <Login />
@@ -27,7 +32,7 @@ function App() {
                   }
               />
               <Route
-                  path="register"
+                  path={registerPath}
                   element={
                       <ProtectedRoute>
                           <Register />
@@ -35,12 +40,14 @@ function App() {
                   }
               />
               <Route element={<AuthRoute/>}>
-                  <Route path="/" element={<Dashboard/>}>
+                  <Route path="/" element={<Layout/>}>
                       <Route index element={<Home/>}/>
-                      <Route path="article" element={<Article/>} />
-                      <Route path="article/add" element={<ArticleAdd />} />
-                      <Route path="tag" element={<Tag/>}/>
-                      <Route path="category" element={<Category/>}/>
+                      <Route path={articlePath.list} element={<Article/>} />
+                      <Route path={articlePath.add} element={<ArticleAdd />} />
+                      <Route path={articlePath.detail} element={<ArticleDetail />} />
+                      <Route path={articlePath.edit} element={<ArticleEdit />} />
+                      <Route path={tagPath.list} element={<Tag/>}/>
+                      <Route path={categoryPath.list} element={<Category/>}/>
                       <Route path="comment" element={<Comment/>}/>
                   </Route>
               </Route>

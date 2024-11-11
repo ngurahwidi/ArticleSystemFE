@@ -1,12 +1,12 @@
-import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import ArticleForm from "./component/ArticleForm.jsx";
 import {articlePath} from "../../path/crudPath.js";
-import articleService from "../../service/api/articleService.js";
 
-const ArticleAdd = () => {
+const ArticleEdit = () => {
+    const { id } = useParams();
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
     const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ const ArticleAdd = () => {
     const [description, setDescription] = useState("");
     const [content, setContent] = useState("");
     const [featuredImage, setFeaturedImage] = useState(null);
-    const [galleries, setGalleries] = useState(null)
+    const [galleries, setGalleries] = useState([]);
     const [statusId, setStatusId] = useState('2');
     const [categories, setCategories] = useState([]);
     const [tags, setTags] = useState([]);
@@ -37,38 +37,63 @@ const ArticleAdd = () => {
 
     const handleImageChange = (e) => {
         setFeaturedImage(e.target.files[0]);
-    }
+    };
 
     const handleGalleryChange = (e) => {
         setGalleries(Array.from(e.target.files));
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const articleData = {
-            title,
-            description,
-            content,
-            featuredImage,
-            galleries,
-            statusId,
-            categoryIds: selectedCategoryIds,
-            tagIds: selectedTagIds,
-        }
+        const articleData = new FormData();
+        articleData.append('title', title);
+        articleData.append('description', description);
+        articleData.append('content', content);
+        if (featuredImage) articleData.append('featuredImage', featuredImage);
+        galleries.forEach((file, index) => articleData.append(`galleries[${index}]`, file));
+        articleData.append('statusId', statusId);
+        selectedCategoryIds.forEach((categoryId, index) => articleData.append(`categoryIds[${index}]`, categoryId));
+        selectedTagIds.forEach((tagId, index) => articleData.append(`tagIds[${index}]`, tagId));
 
         try {
-            await articleService.createArticle(articleData);
+            await axios.post(`http://127.0.0.1:8000/api/web/v1/articles/${id}`, articleData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,
+                }
+            });
 
-            Swal.fire("Success", "Article added successfully!", "success");
-
+            Swal.fire("Success", "Article updated successfully!", "success");
             navigate(articlePath.list);
         } catch (error) {
-            setError(error)
-            Swal.fire("Error!", error.response.data.status.message, 'error');
-            navigate(articlePath.list);
+            setError(error.response.data.status.message);
+            Swal.fire("Error!", "Failed to update article!", "error");
+            console.log(error);
         }
-    }
+    };
+
+    const fetchArticleData = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/web/v1/articles/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+
+            const article = response.data.result;
+            setTitle(article.title);
+            setDescription(article.description);
+            setContent(article.content);
+            setStatusId(article.statusId);
+            setSelectedCategory(article.categories.map(category => ({ value: category.id, label: category.name })));
+            setSelectedCategoryIds(article.categories.map(category => category.id));
+            setSelectedTag(article.tags.map(tag => ({ value: tag.id, label: tag.name })));
+            setSelectedTagIds(article.tags.map(tag => tag.id));
+        } catch (err) {
+            setError(err.response?.data?.status?.message || "Failed to fetch article data.");
+        }
+    };
 
     const fetchCategories = async () => {
         try {
@@ -76,19 +101,15 @@ const ArticleAdd = () => {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
-            })
-
-            setCategories(response.data.result.map((category) => {
-                return {value: category.id, label: category.name};
-            }));
+            });
+            setCategories(response.data.result.map((category) => ({
+                value: category.id,
+                label: category.name
+            })));
         } catch (err) {
-            if (err.response && err.response.status === 401) {
-                localStorage.clear()
-            } else {
-                setError(err.response.data.status.message);
-            }
+            setError(err.response.data.status.message || "Failed to fetch categories.");
         }
-    }
+    };
 
     const fetchTags = async () => {
         try {
@@ -96,29 +117,27 @@ const ArticleAdd = () => {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
-            })
-            setTags(response.data.result.map((tag) => {
-                return {value: tag.id, label: tag.name}
-            }));
+            });
+            setTags(response.data.result.map((tag) => ({
+                value: tag.id,
+                label: tag.name
+            })));
         } catch (err) {
-            if (err.response && err.response.status.code === 401) {
-                localStorage.clear()
-            } else {
-                setError(err.response.data.status.message);
-            }
+            setError(err.response.data.status.message || "Failed to fetch tags.");
         }
-    }
+    };
 
     useEffect(() => {
+        fetchArticleData();
         fetchCategories();
-        fetchTags()
+        fetchTags();
     }, []);
 
     if (error) return <p>{error}</p>;
 
     return (
         <div className='container mt-5 bg-white p-5 rounded-4'>
-            <h1 className='text-center mb-3'>Add Article</h1>
+            <h1 className='text-center mb-3'>Edit Article</h1>
             <ArticleForm
                 title={title}
                 setTitle={setTitle}
@@ -137,9 +156,10 @@ const ArticleAdd = () => {
                 selectedTag={selectedTag}
                 handleTagChange={handleTagChange}
                 onSubmit={handleSubmit}
-                onCancel={() => navigate(articlePath.list)}/>
+                onCancel={() => navigate(articlePath.list)}
+            />
         </div>
-    )
-}
+    );
+};
 
-export default ArticleAdd
+export default ArticleEdit;

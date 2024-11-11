@@ -1,9 +1,9 @@
 import {Edit} from "iconsax-react";
 
-const BtnEdit = () => {
+const BtnEdit = ({onClick}) => {
     return (
-        <button className="btn btn-warning btn-sm mx-1">
-            <Edit color="#d9e3f0" variant="Outline"/>
+        <button className="btn bg-white btn-sm" onClick={onClick}>
+            <Edit color="#ebdb34" variant="Outline" size='20'/>
         </button>
     )
 }

@@ -1,7 +1,8 @@
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 
-const SidebarItem = ({activePath, to, icon: Icon, label, isExpanded}) => {
-    const isActive = activePath === to;
+const SidebarItem = ({to, icon: Icon, label, isExpanded, exact = false}) => {
+    const location = useLocation();
+    const isActive = exact ? location.pathname === to : location.pathname.startsWith(to);
 
     return (
         <NavLink to={to}

@@ -1,9 +1,12 @@
-import {SearchNormal1} from "iconsax-react";
+import {Eye} from "iconsax-react";
 
-const BtnDetail = () => {
+const BtnDetail = ({onClick}) => {
     return (
-        <button className='btn btn-info btn-sm rounded mx-1'>
-            <SearchNormal1 color="#d9e3f0" variant="Outline"/>
+        <button className='btn bg-white btn-sm rounded' onClick={onClick}>
+            <Eye
+                color="#555555"
+                size='20'
+            />
         </button>
     )
 }

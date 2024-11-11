@@ -4,8 +4,11 @@ import BtnDelete from "../../../component/BtnDelete.jsx";
 import BtnEdit from "../../../component/BtnEdit.jsx";
 import Swal from "sweetalert2";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import {articlePath} from "../../../path/crudPath.js";
 
 const ArticleList = ({ datas, fetchArticles }) => {
+    const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
     const handleDelete = async (id) => {
@@ -44,29 +47,29 @@ const ArticleList = ({ datas, fetchArticles }) => {
         }
     }
     return (
-        <tbody>
-        {datas.map((data, index) => (
-            <tr key={data.id}>
-                <td>{index + 1}</td>
-                <td>
-                    <img
-                        src={data.featuredImage ? `http://127.0.0.1:8000${data.featuredImage}` : logo}
-                        alt={data.title}
-                        style={{width: '50px', height: '50px'}}
-                    />
-                </td>
-                <td>{data.title}</td>
-                <td>{data.description}</td>
-                <td>{data.status.name}</td>
-                <td>{data.popular}</td>
-                <td>
-                    <BtnDetail />
-                    <BtnEdit />
-                    <BtnDelete onClick={() => handleDelete(data.id)} />
-                </td>
-            </tr>
-        ))}
-        </tbody>
+        <>
+            {datas.map((data, index) => (
+                <tr key={data.id}>
+                    <td>{index + 1}</td>
+                    <td>
+                        <img
+                            src={data.featuredImage ? `http://127.0.0.1:8000${data.featuredImage}` : logo}
+                            alt={data.title}
+                            style={{width: '50px', height: '50px'}}
+                        />
+                    </td>
+                    <td>{data.title}</td>
+                    <td>{data.description}</td>
+                    <td>{data.status.name}</td>
+                    <td>{data.popular}</td>
+                    <td>
+                        <BtnDetail onClick={() => navigate(`${articlePath.list}/${data.id}`)}/>
+                        <BtnEdit onClick={() => navigate(`${articlePath.list}/${data.id}/edit`)}/>
+                        <BtnDelete onClick={() => handleDelete(data.id)} />
+                    </td>
+                </tr>
+            ))}
+        </>
     )
 }
 
