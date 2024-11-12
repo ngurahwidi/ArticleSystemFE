@@ -1,10 +1,11 @@
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import {clearLs, getToken} from "../config/auth.js";
 
 const useLogout = () => {
     const navigate = useNavigate()
-    const token = localStorage.getItem('token')
+    const token = getToken()
 
     const logout = async () => {
         const result = await Swal.fire({
@@ -24,7 +25,7 @@ const useLogout = () => {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                localStorage.clear()
+                clearLs()
                 navigate('/login')
             } catch (error) {
                 console.log(error)

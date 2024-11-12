@@ -9,14 +9,14 @@ import Tag from "./page/tag/Tag.jsx";
 import Home from "./page/Home.jsx";
 import Category from "./page/category/Category.jsx";
 import Comment from "./page/comment/Comment.jsx";
-import ProtectedRoute from "./ProtectedRoute.jsx";
-import AuthRoute from "./AuthRoute.jsx";
+import ProtectedRoute from "./component/auth/ProtectedRoute.jsx";
+import AuthRoute from "./component/auth/AuthRoute.jsx";
 import ArticleAdd from "./page/article/ArticleAdd.jsx";
 import ArticleDetail from "./page/article/ArticleDetail.jsx";
 import ArticleEdit from "./page/article/ArticleEdit.jsx";
 import {loginPath, registerPath} from "./path/authPath.js";
 import {articlePath, categoryPath, tagPath} from "./path/crudPath.js";
-import Layout from "./page/layout/Layout.jsx";
+import Layout from "./component/layout/Layout.jsx";
 
 function App() {
 

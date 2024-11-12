@@ -10,9 +10,9 @@ import {AddCircle} from "iconsax-react";
 import {articlePath} from "../../path/crudPath.js";
 import articleService from "../../service/api/articleService.js";
 import categoryService from "../../service/api/categoryService.js";
+import tagService from "../../service/api/tagService.js";
 
 const Article = () => {
-    const token = localStorage.getItem("token");
     const navigate = useNavigate();
     const [filters, setFilters] = useState({
         search: '',
@@ -102,20 +102,12 @@ const Article = () => {
 
     const fetchTags = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/web/v1/articles/components/tags', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
+            const response = await tagService.getTag()
             setTags(response.data.result.map((tag) => {
-                return {value: tag.id.toString(), label: tag.name}
+                return {value: tag.id, label: tag.name}
             }));
         } catch (err) {
-            if (err.response && err.response.status.code === 401) {
-                localStorage.clear()
-            } else {
-                setError(err.response.data.status.message);
-            }
+            setError(err.response.data.status.message);
         }
     }
 

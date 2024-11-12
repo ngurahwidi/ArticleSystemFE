@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import {setToken} from "../../../config/auth.js";
 
 const useLogin = () => {
     const [loading, setLoading] = useState(false)
@@ -17,8 +18,7 @@ const useLogin = () => {
                 password
             })
             if (response.status === 200 && response.data.result.token) {
-                localStorage.setItem('token', response.data.result.token)
-                localStorage.setItem('username', response.data.result.username)
+                setToken(response.data.result.token)
 
                 console.log("Login succes")
                 navigate('/')

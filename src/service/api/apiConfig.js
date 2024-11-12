@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import {getToken} from "../../config/auth.js";
 
 export const API_URL = import.meta.env.VITE_BASE_URL;
 
@@ -12,7 +13,7 @@ const apiInstance = axios.create({
 
 apiInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
+        const token = getToken();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }

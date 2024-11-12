@@ -1,4 +1,4 @@
-import Layout from "./layout/Layout.jsx";
+import Layout from "../component/layout/Layout.jsx";
 
 const Dashboard = () => {
     return (
