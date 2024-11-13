@@ -75,9 +75,7 @@ const ArticleAdd = () => {
 
             navigate(articlePath.list);
         } catch (error) {
-            setError(error)
-            Swal.fire("Error!", error.response.data.status.message, 'error');
-            navigate(articlePath.list);
+            setError(error.response.data.status.message);
         }
     }
 
@@ -117,11 +115,10 @@ const ArticleAdd = () => {
         fetchTags()
     }, []);
 
-    if (error) return <p>{error}</p>;
-
     return (
-        <div className='container mt-5 bg-white p-5 rounded-4'>
-            <h1 className='text-center mb-3'>Add Article</h1>
+        <div className='card card-body'>
+            <h1 className='mb-3 fs-2'>Add Article</h1>
+            <p className='text-danger'>{error}</p>
             <ArticleForm
                 title={formRequest.title}
                 handleChange={handleChange}

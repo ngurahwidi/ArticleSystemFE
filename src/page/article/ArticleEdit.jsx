@@ -78,7 +78,6 @@ const ArticleEdit = () => {
         } catch (error) {
             setError(error.response.data.status.message);
             Swal.fire("Error!", "Failed to update article!", "error");
-            console.log(error);
         }
     };
 
@@ -99,7 +98,7 @@ const ArticleEdit = () => {
             setSelectedTag(article.tags.map(tag => ({ value: tag.id, label: tag.name })));
             setSelectedTagIds(article.tags.map(tag => tag.id));
         } catch (err) {
-            setError(err.response?.data?.status?.message || "Failed to fetch article data.");
+            setError(err.response.data.status.message);
         }
     };
 
@@ -144,8 +143,8 @@ const ArticleEdit = () => {
     if (error) return <p>{error}</p>;
 
     return (
-        <div className='container mt-5 bg-white p-5 rounded-4'>
-            <h1 className='text-center mb-3'>Edit Article</h1>
+        <div className='card card-body'>
+            <h1 className='mb-4 fs-2'>Edit Article</h1>
             <ArticleForm
                 title={formRequest.title}
                 handleChange={handleChange}

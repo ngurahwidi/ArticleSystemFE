@@ -4,6 +4,9 @@ const categoryService = {
     getCategory() {
         return apiInstance.get('/components/categories')
     },
+    getCategoryById(id) {
+        return apiInstance.get(`/components/categories/${id}`);
+    },
     createCategory(data) {
         return apiInstance.post('/components/categories', data);
     },
