@@ -1,0 +1,26 @@
+$height-form: 900px;
+$width-form: 624px;
+$width-login-image: 870px;
+$height-login-image: 930px;
+
+.auth-container {
+  height: $height-form;
+  width: $width-form;
+}
+
+.image-container {
+  height: $height-login-image;
+  width: $width-login-image;
+  left: 150px;
+}
+
+.image-content{
+  top: 682px;
+  left: 75px;
+  p {
+    font-size: 24px;
+  }
+  h1 {
+    font-size: 34px;
+  }
+}

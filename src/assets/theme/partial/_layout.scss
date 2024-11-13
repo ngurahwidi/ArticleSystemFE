@@ -1,0 +1,40 @@
+$defaultLeft: 240px;
+$styleLeft: 80px;
+$defaultWidth: 240px;
+$styleWidth: 80px;
+$defaultColor: #ACADC1;
+$activeColor: #FFC107;
+$defaultPaddingLeft: 240px;
+$stylePaddingLeft: 80px;
+
+.default-left {
+  left: $defaultLeft;
+}
+
+.style-left {
+  left: $styleLeft;
+}
+
+.default-width {
+  width: $defaultWidth;
+}
+
+.style-width {
+  width: $styleWidth;
+}
+
+.default-color {
+  color: $defaultColor;
+}
+
+.active-color {
+  color: $activeColor;
+}
+
+.default-pl {
+  padding-left: $defaultPaddingLeft;
+}
+
+.style-pl {
+  padding-left: $stylePaddingLeft;
+}
