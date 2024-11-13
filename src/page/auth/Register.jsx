@@ -48,20 +48,19 @@ const Register = () => {
             profile,
         }
         try {
-            const response = await register(userData);
+            await register(userData);
 
-            console.log("User  registered successfully:", response.data);
             navigate("/login");
         } catch (error) {
-            console.error("Registration failed:", error);
-            setError("Failed to register user.");
+            setError('Failed to register');
+            console.log(error);
         } finally {
             setLoading(false);
         }
     };
     return (
         <>
-            <div className="d-flex justify-content-between align-items-center gap-5">
+            <div className="d-flex justify-content-between position-fixed">
                 <div className="auth-container d-flex flex-column justify-content-around ps-5">
                     <div className="mt-3 ms-5 mb-3">
                         <img src={logo} alt="logo"/>
@@ -108,7 +107,7 @@ const Register = () => {
                         <NavLink to={'/login'} className="text-decoration-none text-secondary text-center">Have an account?</NavLink>
                     </form>
                 </div>
-                <div className="image-container w-75 overflow-hidden rounded-5 m-3 position-relative">
+                <div className="image-container align-items-center rounded-5 m-3 overflow-hidden position-relative">
                 <AuthImage/>
                     <AuthImageContent/>
                 </div>

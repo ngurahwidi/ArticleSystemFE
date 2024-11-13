@@ -1,13 +1,12 @@
 import THead from "../../component/THead.jsx";
 import ArticleList from "./component/ArticleList.jsx";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import { format, parseISO, isValid } from 'date-fns';
 import Label from "../../component/Label.jsx";
 import Select from "react-select";
 import {useNavigate} from "react-router-dom";
 import {AddCircle} from "iconsax-react";
-import {articlePath} from "../../path/crudPath.js";
+import articlePath from "../../path/articlePath.js";
 import articleService from "../../service/api/articleService.js";
 import categoryService from "../../service/api/categoryService.js";
 import tagService from "../../service/api/tagService.js";
@@ -229,6 +228,7 @@ const Article = () => {
                 <button className="btn btn-warning px-4 py-1" onClick={() => navigate(articlePath.add)}><AddCircle
                     color="#d9e3f0"/></button>
             </div>
+
             <table className="table table-bordered">
                 <THead titles={["No", "Feature Image", "Title", "Description", "Status", "Popular", "Action"]}/>
                 <tbody>
@@ -237,9 +237,9 @@ const Article = () => {
                         <td colSpan='7' className='text-center text-danger'>{error}</td>
                     </tr>
                 ) : loading ? (
-                    <td>
+                    <tr>
                         <td colSpan='7' className='text-center'>Loading...</td>
-                    </td>
+                    </tr>
                 ) : (
                     <ArticleList datas={articles} fetchArticles={fetchArticles}/>
                 )}

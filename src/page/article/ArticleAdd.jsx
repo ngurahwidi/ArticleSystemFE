@@ -1,27 +1,38 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
 import ArticleForm from "./component/ArticleForm.jsx";
-import {articlePath} from "../../path/crudPath.js";
+import articlePath from "../../path/articlePath.js";
 import articleService from "../../service/api/articleService.js";
+import categoryService from "../../service/api/categoryService.js";
+import tagService from "../../service/api/tagService.js";
 
 const ArticleAdd = () => {
-    const token = localStorage.getItem("token");
     const navigate = useNavigate();
     const [error, setError] = useState(null);
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [content, setContent] = useState("");
+    const [formRequest, setFormRequest] = useState({
+        title: '',
+        content: '',
+        statusId: '2',
+        categories: [],
+        tags: [],
+    })
     const [featuredImage, setFeaturedImage] = useState(null);
     const [galleries, setGalleries] = useState(null)
-    const [statusId, setStatusId] = useState('2');
-    const [categories, setCategories] = useState([]);
-    const [tags, setTags] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedTag, setSelectedTag] = useState([]);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
     const [selectedTagIds, setSelectedTagIds] = useState([]);
+
+    const handleChange = (e) => {
+        const {name, value} = e.target
+
+        setFormRequest((prevState) => {
+            const newState = {...prevState}
+            newState[name] = value;
+            return newState;
+        })
+    }
 
     const handleTagChange = (selectedOptions) => {
         const tagIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
@@ -47,12 +58,12 @@ const ArticleAdd = () => {
         e.preventDefault();
 
         const articleData = {
-            title,
-            description,
-            content,
+            title: formRequest.title,
+            description: formRequest.description,
+            content: formRequest.content,
             featuredImage,
             galleries,
-            statusId,
+            statusId: formRequest.statusId,
             categoryIds: selectedCategoryIds,
             tagIds: selectedTagIds,
         }
@@ -72,40 +83,32 @@ const ArticleAdd = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/web/v1/articles/components/categories', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
+            const response = await categoryService.getCategory()
 
-            setCategories(response.data.result.map((category) => {
-                return {value: category.id, label: category.name};
+            setFormRequest((prevState) => ({
+                ...prevState,
+                categories: response.data.result.map((category) => ({
+                    value: category.id,
+                    label: category.name
+                }))
             }));
         } catch (err) {
-            if (err.response && err.response.status === 401) {
-                localStorage.clear()
-            } else {
-                setError(err.response.data.status.message);
-            }
+            setError(err.response.data.status.message);
         }
     }
 
     const fetchTags = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/web/v1/articles/components/tags', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-            setTags(response.data.result.map((tag) => {
-                return {value: tag.id, label: tag.name}
-            }));
+            const response = await tagService.getTag()
+            setFormRequest((prevState) => ({
+                ...prevState,
+                tags: response.data.result.map((tag) => ({
+                    value: tag.id,
+                    label: tag.name
+                }))
+            }))
         } catch (err) {
-            if (err.response && err.response.status.code === 401) {
-                localStorage.clear()
-            } else {
-                setError(err.response.data.status.message);
-            }
+            setError(err.response.data.status.message);
         }
     }
 
@@ -120,20 +123,17 @@ const ArticleAdd = () => {
         <div className='container mt-5 bg-white p-5 rounded-4'>
             <h1 className='text-center mb-3'>Add Article</h1>
             <ArticleForm
-                title={title}
-                setTitle={setTitle}
-                description={description}
-                setDescription={setDescription}
-                content={content}
-                setContent={setContent}
+                title={formRequest.title}
+                handleChange={handleChange}
+                description={formRequest.description}
+                content={formRequest.content}
                 handleImageChange={handleImageChange}
                 handleGalleryChange={handleGalleryChange}
-                statusId={statusId}
-                setStatusId={setStatusId}
-                categories={categories}
+                statusId={formRequest.statusId}
+                categories={formRequest.categories}
                 selectedCategory={selectedCategory}
                 handleCategoryChange={handleCategoryChange}
-                tags={tags}
+                tags={formRequest.tags}
                 selectedTag={selectedTag}
                 handleTagChange={handleTagChange}
                 onSubmit={handleSubmit}

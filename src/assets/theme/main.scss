@@ -5,6 +5,10 @@
 @import "./partial/layout";
 @import "./partial/cursor";
 
+root {
+  width: 1440px;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background-color: #F4F6F9;

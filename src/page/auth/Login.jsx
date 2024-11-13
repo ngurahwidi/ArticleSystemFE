@@ -17,15 +17,17 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        login(email, password)
+        const userData = {
+            email,
+            password
+        }
+        login(userData)
     }
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
     return (
         <>
-            <div className="d-flex justify-content-between align-items-center gap-5">
-                <div className="auth-container d-flex flex-column justify-content-between ps-5">
+            <div className="d-flex justify-content-between position-fixed">
+                <div className="auth-container d-flex flex-column justify-content-around ps-5">
                     <div className="mt-3 ms-5 mb-5">
                         <img src={logo} alt="logo"/>
                     </div>
@@ -40,7 +42,8 @@ const Login = () => {
                             <Input type="password" id="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <div className="text-center mb-5">
-                            <BtnWarning type="submit" className="w-100 btn btn-warning px-4 rounded-3 py-2 mb-3">Login</BtnWarning>
+                            <p className='text-center text-danger'>{error}</p>
+                            <BtnWarning type="submit" className="w-100 btn btn-warning px-4 rounded-3 py-2 mb-3">{loading ? 'Loading...' : 'Login'}</BtnWarning>
                             <NavLink to={'/register'} className="text-decoration-none text-secondary text-center">Create account?</NavLink>
                         </div>
                         <div>
@@ -51,7 +54,7 @@ const Login = () => {
                     <FormFooter />
                 </div>
 
-                <div className="image-container overflow-hidden w-75 rounded-5 m-3 position-relative">
+                <div className="image-container align-items-center rounded-5 m-3 overflow-hidden position-relative">
                     <AuthImage/>
                     <AuthImageContent/>
                 </div>

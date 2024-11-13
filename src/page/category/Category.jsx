@@ -1,24 +1,50 @@
 import THead from "../../component/THead.jsx";
 import CategoryList from "./component/CategoryList.jsx"
-import useFetch from "../../hook/useFetch.js";
+import {useEffect, useState} from "react";
+import categoryService from "../../service/api/categoryService.js";
 
 const Category = () => {
-    const token = localStorage.getItem("token");
-    const url = 'http://127.0.0.1:8000/api/web/v1/articles/components/categories'
+    const [categories, setCategories] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const {data: category, loading, error} = useFetch(url, token)
+    const fetchCategory = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await categoryService.getCategory()
+            setCategories(response.data.result)
+        } catch (error) {
+            setError(error.response.data.status.message);
+        } finally {
+            setLoading(false);
+        }
+    }
 
-    if (loading) return <p>Loading articles...</p>;
-    if (error) return <p>{error}</p>;
+    useEffect(() => {
+        fetchCategory()
+    }, [])
 
     return (
-        <div>
+        <>
             <table className="table table-bordered">
-                <THead titles={['No', 'Name', 'Icon', 'Status', 'Action']} />
-                <CategoryList datas={category}/>
+                <THead titles={['No', 'Name', 'Icon', 'Status', 'Action']}/>
+                <tbody>
+                {error ? (
+                    <tr>
+                        <td colSpan='5' className='text-center text-danger'>{error}</td>
+                    </tr>
+                ) : loading ? (
+                    <tr>
+                        <td colSpan='5' className='text-center'>Loading...</td>
+                    </tr>
+                ) : (
+                    <CategoryList datas={categories}/>
+                )}
+                </tbody>
             </table>
-        </div>
-    )
+        </>
+)
 }
 
 export default Category

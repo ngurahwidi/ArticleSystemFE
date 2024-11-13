@@ -1,6 +1,9 @@
-import {Book, Home, Hashtag, Category, MessageCircle} from "iconsax-react";
+import {Book, Home, Hashtag, Category} from "iconsax-react";
 import SidebarLogo from "./SidebarLogo.jsx";
 import SidebarItem from "./SidebarItem.jsx";
+import articlePath from "../../../path/articlePath.js";
+import tagPath from "../../../path/tagPath.js";
+import categoryPath from "../../../path/categoryPath.js";
 
 const Sidebar = ({isExpanded}) => {
 
@@ -10,10 +13,9 @@ const Sidebar = ({isExpanded}) => {
                <SidebarLogo isExpanded={isExpanded}/>
                 <div className={`container-icon d-flex flex-column gap-3 ${isExpanded ? "" : "align-items-center"}`}>
                     <SidebarItem to="/" isExpanded={isExpanded} icon={Home} label="Dashboard" exact/>
-                    <SidebarItem to="/article" isExpanded={isExpanded} icon={Book} label="Article"/>
-                    <SidebarItem to="/tag" isExpanded={isExpanded} icon={Hashtag} label="Tag"/>
-                    <SidebarItem to="/category" isExpanded={isExpanded} icon={Category} label="Category"/>
-                    <SidebarItem to="/comment" isExpanded={isExpanded} icon={MessageCircle} label="Comment"/>
+                    <SidebarItem to={articlePath.list} isExpanded={isExpanded} icon={Book} label="Article"/>
+                    <SidebarItem to={tagPath.list} isExpanded={isExpanded} icon={Hashtag} label="Tag"/>
+                    <SidebarItem to={categoryPath.list} isExpanded={isExpanded} icon={Category} label="Category"/>
                 </div>
             </div>
         </>

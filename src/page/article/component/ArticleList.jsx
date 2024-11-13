@@ -3,13 +3,12 @@ import BtnDetail from "../../../component/BtnDetail.jsx"
 import BtnDelete from "../../../component/BtnDelete.jsx";
 import BtnEdit from "../../../component/BtnEdit.jsx";
 import Swal from "sweetalert2";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {articlePath} from "../../../path/crudPath.js";
+import articlePath from "../../../path/articlePath.js";
+import articleService from "../../../service/api/articleService.js";
 
 const ArticleList = ({ datas, fetchArticles }) => {
     const navigate = useNavigate();
-    const token = localStorage.getItem("token");
 
     const handleDelete = async (id) => {
         const result = await Swal.fire({
@@ -24,11 +23,7 @@ const ArticleList = ({ datas, fetchArticles }) => {
 
         if (result.isConfirmed) {
             try {
-                await axios.delete(`http://127.0.0.1:8000/api/web/v1/articles/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    }
-                })
+                await articleService.deleteArticle(id)
 
                 Swal.fire(
                     'Deleted!',

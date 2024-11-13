@@ -1,14 +1,17 @@
-$height-login: 900px;
-$width-login: 624px;
+$height-form: 900px;
+$width-form: 624px;
+$width-login-image: 870px;
+$height-login-image: 930px;
 
 .auth-container {
-  min-height: 100vh;
-  height: $height-login;
-  width: $width-login;
+  height: $height-form;
+  width: $width-form;
 }
 
 .image-container {
-  height: $height-login;
+  height: $height-login-image;
+  width: $width-login-image;
+  left: 150px;
 }
 
 .image-content{

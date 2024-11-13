@@ -4,15 +4,12 @@ import Select from "react-select";
 
 const ArticleForm = ({
                          title,
-                         setTitle,
+                         handleChange,
                          description,
-                         setDescription,
                          content,
-                         setContent,
                          handleImageChange,
                          handleGalleryChange,
                          statusId,
-                         setStatusId,
                          categories,
                          selectedCategory,
                          handleCategoryChange,
@@ -23,13 +20,15 @@ const ArticleForm = ({
                          onCancel,
                      }) => {
     return (
+
         <form onSubmit={onSubmit}>
             <div className='mb-3'>
                 <Label>Title</Label>
                 <Input
                     type='text'
+                    name='title'
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={handleChange}
                     required
                 />
             </div>
@@ -37,8 +36,9 @@ const ArticleForm = ({
                 <Label>Description</Label>
                 <Input
                     type='text'
+                    name='description'
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={handleChange}
                     required
                 />
             </div>
@@ -46,8 +46,9 @@ const ArticleForm = ({
                 <Label>Content</Label>
                 <Input
                     type='text'
+                    name='content'
                     value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    onChange={handleChange}
                     required
                 />
             </div>
@@ -68,8 +69,9 @@ const ArticleForm = ({
                 <Label>Status</Label>
                 <select
                     className='form-control'
+                    name='statusId'
                     value={statusId}
-                    onChange={(e) => setStatusId(e.target.value)}
+                    onChange={handleChange}
                     required
                 >
                     <option value='1'>Draft</option>

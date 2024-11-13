@@ -1,27 +1,40 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
 import ArticleForm from "./component/ArticleForm.jsx";
-import {articlePath} from "../../path/crudPath.js";
+import articlePath from "../../path/articlePath.js";
+import articleService from "../../service/api/articleService.js";
+import categoryService from "../../service/api/categoryService.js";
+import tagService from "../../service/api/tagService.js";
 
 const ArticleEdit = () => {
     const { id } = useParams();
-    const token = localStorage.getItem("token");
     const navigate = useNavigate();
     const [error, setError] = useState(null);
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [content, setContent] = useState("");
+    const [formRequest, setFormRequest] = useState({
+        title: '',
+        description: '',
+        content: '',
+        statusId: '',
+        categories: [],
+        tags: [],
+    })
     const [featuredImage, setFeaturedImage] = useState(null);
     const [galleries, setGalleries] = useState([]);
-    const [statusId, setStatusId] = useState('2');
-    const [categories, setCategories] = useState([]);
-    const [tags, setTags] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedTag, setSelectedTag] = useState([]);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
     const [selectedTagIds, setSelectedTagIds] = useState([]);
+
+    const handleChange = (e) => {
+        const {name, value} = e.target
+
+        setFormRequest((prevState) => {
+            const newState = {...prevState}
+            newState[name] = value;
+            return newState;
+        })
+    }
 
     const handleTagChange = (selectedOptions) => {
         const tagIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
@@ -46,23 +59,19 @@ const ArticleEdit = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const articleData = new FormData();
-        articleData.append('title', title);
-        articleData.append('description', description);
-        articleData.append('content', content);
-        if (featuredImage) articleData.append('featuredImage', featuredImage);
-        galleries.forEach((file, index) => articleData.append(`galleries[${index}]`, file));
-        articleData.append('statusId', statusId);
-        selectedCategoryIds.forEach((categoryId, index) => articleData.append(`categoryIds[${index}]`, categoryId));
-        selectedTagIds.forEach((tagId, index) => articleData.append(`tagIds[${index}]`, tagId));
+        const articleData = {
+            title: formRequest.title,
+            description: formRequest.description,
+            content: formRequest.content,
+            statusId: formRequest.statusId,
+            featuredImage,
+            galleries,
+            categoryIds: selectedCategoryIds,
+            tagIds: selectedTagIds,
+        }
 
         try {
-            await axios.post(`http://127.0.0.1:8000/api/web/v1/articles/${id}`, articleData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`,
-                }
-            });
+            await articleService.updateArticle(id, articleData);
 
             Swal.fire("Success", "Article updated successfully!", "success");
             navigate(articlePath.list);
@@ -75,17 +84,16 @@ const ArticleEdit = () => {
 
     const fetchArticleData = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/web/v1/articles/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            });
+            const response = await articleService.getArticleById(id)
 
             const article = response.data.result;
-            setTitle(article.title);
-            setDescription(article.description);
-            setContent(article.content);
-            setStatusId(article.statusId);
+            setFormRequest((prevState) => ({
+                ...prevState,
+                title: article.title,
+                description: article.description,
+                content: article.content,
+                statusId: article.status.id,
+            }))
             setSelectedCategory(article.categories.map(category => ({ value: category.id, label: category.name })));
             setSelectedCategoryIds(article.categories.map(category => category.id));
             setSelectedTag(article.tags.map(tag => ({ value: tag.id, label: tag.name })));
@@ -97,15 +105,15 @@ const ArticleEdit = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/web/v1/articles/components/categories', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            });
-            setCategories(response.data.result.map((category) => ({
-                value: category.id,
-                label: category.name
-            })));
+            const response = await categoryService.getCategory()
+
+            setFormRequest((prevState) => ({
+                ...prevState,
+                categories: response.data.result.map((category) => ({
+                    value: category.id,
+                    label: category.name,
+                }))
+            }))
         } catch (err) {
             setError(err.response.data.status.message || "Failed to fetch categories.");
         }
@@ -113,15 +121,15 @@ const ArticleEdit = () => {
 
     const fetchTags = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/web/v1/articles/components/tags', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            });
-            setTags(response.data.result.map((tag) => ({
-                value: tag.id,
-                label: tag.name
-            })));
+            const response = await tagService.getTag()
+
+            setFormRequest((prevState) => ({
+                ...prevState,
+                tags: response.data.result.map((tag) => ({
+                    value: tag.id,
+                    label: tag.name,
+                }))
+            }))
         } catch (err) {
             setError(err.response.data.status.message || "Failed to fetch tags.");
         }
@@ -139,20 +147,19 @@ const ArticleEdit = () => {
         <div className='container mt-5 bg-white p-5 rounded-4'>
             <h1 className='text-center mb-3'>Edit Article</h1>
             <ArticleForm
-                title={title}
-                setTitle={setTitle}
-                description={description}
-                setDescription={setDescription}
-                content={content}
-                setContent={setContent}
+                title={formRequest.title}
+                handleChange={handleChange}
+                description={formRequest.description}
+                content={formRequest.content}
+                featuredImage={formRequest.featuredImage}
                 handleImageChange={handleImageChange}
+                galleries={formRequest.galleries}
                 handleGalleryChange={handleGalleryChange}
-                statusId={statusId}
-                setStatusId={setStatusId}
-                categories={categories}
+                statusId={formRequest.statusId}
+                categories={formRequest.categories}
                 selectedCategory={selectedCategory}
                 handleCategoryChange={handleCategoryChange}
-                tags={tags}
+                tags={formRequest.tags}
                 selectedTag={selectedTag}
                 handleTagChange={handleTagChange}
                 onSubmit={handleSubmit}

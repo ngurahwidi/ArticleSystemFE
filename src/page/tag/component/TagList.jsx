@@ -5,7 +5,7 @@ import BtnDelete from "../../../component/BtnDelete.jsx";
 
 const TagList = ({ datas }) => {
     return (
-        <tbody>
+        <>
         {datas.map((data, index) => (
             <tr key={data.id}>
                 <td>{index + 1}</td>
@@ -25,7 +25,7 @@ const TagList = ({ datas }) => {
                 </td>
             </tr>
         ))}
-        </tbody>
+        </>
     )
 }
 

@@ -1,31 +1,25 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 import {setToken} from "../../../config/auth.js";
+import authService from "../../../service/api/authService.js";
 
 const useLogin = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const navigate = useNavigate()
 
-    const login = async (email, password) => {
+    const login = async (data) => {
         setLoading(true)
         setError(null)
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/web/v1/articles/auths/login', {
-                email,
-                password
-            })
+            const response = await authService.login(data);
             if (response.status === 200 && response.data.result.token) {
                 setToken(response.data.result.token)
-
-                console.log("Login succes")
                 navigate('/')
             }
         } catch(error) {
-            console.log('Login error', error)
-            setError('Login failed, please check your credentials')
+            setError(error.response.data.status.message);
         } finally {
             setLoading(false)
         }
