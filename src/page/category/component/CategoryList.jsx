@@ -56,7 +56,6 @@ const CategoryList = ({ datas, fetchCategory }) => {
                     </td>
                     <td>{data.status.name}</td>
                     <td>
-                        <BtnDetail onClick={() => navigate(`${categoryPath.list}/${data.id}`)}/>
                         <BtnEdit onClick={() => navigate(`${categoryPath.list}/${data.id}/edit`)}/>
                         <BtnDelete onClick={() => handleDelete(data.id)}/>
                     </td>

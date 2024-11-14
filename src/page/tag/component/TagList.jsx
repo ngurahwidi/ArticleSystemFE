@@ -1,9 +1,44 @@
 import logo from '../../../assets/image/avatar.svg'
-import BtnDetail from "../../../component/BtnDetail.jsx";
 import BtnEdit from "../../../component/BtnEdit.jsx";
 import BtnDelete from "../../../component/BtnDelete.jsx";
+import {useNavigate} from "react-router-dom";
+import Swal from "sweetalert2";
+import tagService from "../../../service/api/tagService.js";
+import tagPath from "../../../path/tagPath.js";
 
 const TagList = ({ datas }) => {
+    const navigate = useNavigate();
+
+    const handleDelete = async (id) => {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the tag.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        })
+
+        if (result.isConfirmed) {
+            try {
+                await tagService.deleteTag(id)
+                Swal.fire(
+                    'Deleted!',
+                    'The tag has been deleted.',
+                    'success'
+                )
+                fetchTag()
+            } catch (err) {
+                Swal.fire(
+                    'Error!',
+                    'There was an error deleting the tag.',
+                    'error'
+                )
+            }
+
+        }
+    }
     return (
         <>
         {datas.map((data, index) => (
@@ -19,9 +54,8 @@ const TagList = ({ datas }) => {
                 </td>
                 <td>{data.status.name}</td>
                 <td>
-                    <BtnDetail />
-                    <BtnEdit />
-                    <BtnDelete />
+                    <BtnEdit onClick={() => navigate(`${tagPath.list}/${data.id}/edit`)}/>
+                    <BtnDelete onClick={() => handleDelete(data.id)}/>
                 </td>
             </tr>
         ))}
