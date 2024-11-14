@@ -1,7 +1,7 @@
 import Label from "../../../component/Label.jsx";
 import Input from "../../../component/Input.jsx";
 
-const CategoryForm = ({onSubmit, name, handleChange, handleIconChange, statusId, onCancel}) => {
+const TagForm = ({onSubmit, name, handleChange, handleIconChange, statusId, onCancel}) => {
     return (
         <form onSubmit={onSubmit}>
             <div className='mb-3'>
@@ -45,10 +45,10 @@ const CategoryForm = ({onSubmit, name, handleChange, handleIconChange, statusId,
                 Cancel
             </button>
             <button type='submit' className='btn btn-warning ms-2'>
-                Save Category
+                Save Tag
             </button>
         </form>
     )
 }
 
-export default CategoryForm
+export default TagForm;

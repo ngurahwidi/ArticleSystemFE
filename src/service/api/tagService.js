@@ -4,6 +4,9 @@ const tagService = {
     getTag() {
         return apiInstance.get('/components/tags')
     },
+    getTagById(id) {
+        return apiInstance.get(`/components/tags/${id}`);
+    },
     createTag(data) {
         return apiInstance.post('/components/tags', data)
     },
