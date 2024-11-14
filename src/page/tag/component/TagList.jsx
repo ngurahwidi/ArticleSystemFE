@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import tagService from "../../../service/api/tagService.js";
 import tagPath from "../../../path/tagPath.js";
 
-const TagList = ({ datas }) => {
+const TagList = ({ datas, fetchTag }) => {
     const navigate = useNavigate();
 
     const handleDelete = async (id) => {
