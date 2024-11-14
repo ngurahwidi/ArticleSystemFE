@@ -1,19 +1,19 @@
+import TagForm from "./component/TagForm.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import categoryService from "../../service/api/categoryService.js";
 import Swal from "sweetalert2";
-import categoryPath from "../../path/categoryPath.js";
-import CategoryForm from "./component/CategoryForm.jsx";
+import tagPath from "../../path/tagPath.js";
+import tagService from "../../service/api/tagService.js";
 
-const CategoryEdit = () => {
+const TagEdit = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [error, setError] = useState(null);
     const [formRequest, setFormRequest] = useState({
         name: '',
-        statusId: ''
+        statusId: '2'
     });
-    const [icon, setIcon] = useState(null);
+    const [icon, setIcon] = useState(null)
+    const [error, setError] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,29 +31,30 @@ const CategoryEdit = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const categoryData = {
+        const tagData = {
             name: formRequest.name,
             statusId: formRequest.statusId,
             icon
         }
+
         try {
-            await categoryService.updateCategory(id, categoryData);
-            Swal.fire("Success", "Category updated successfully!", "success");
-            navigate(categoryPath.list)
+            await tagService.updateTag(id, tagData);
+            Swal.fire("Success", "Tag updated successfully!", "success");
+            navigate(tagPath.list);
         } catch (err) {
             setError(err.response.data.status.message);
         }
     }
 
-    const fetchCategoryData = async () => {
+    const fetchTagData = async () => {
         try {
-            const response = await categoryService.getCategoryById(id)
+            const response = await tagService.getTagById(id)
 
-            const category = response.data.result;
+            const tag = response.data.result;
             setFormRequest((prevState) => ({
                 ...prevState,
-                name: category.name,
-                statusId: category.status.id,
+                name: tag.name,
+                statusId: tag.status.id,
             }))
         } catch (err) {
             setError(err.response.data.status.message);
@@ -61,22 +62,21 @@ const CategoryEdit = () => {
     }
 
     useEffect(() => {
-        fetchCategoryData();
+        fetchTagData();
     }, [])
     return (
         <div className='card card-body'>
-            <h1 className='mb-3 fs-2'>Edit Category</h1>
-            <p className='text-danger'>{error}</p>
-            <CategoryForm
+            <h1 className={'mb-3 fs-2'}>Edit Tag</h1>
+            <TagForm
                 onSubmit={handleSubmit}
                 name={formRequest.name}
                 statusId={formRequest.statusId}
                 handleIconChange={handleIconChange}
                 handleChange={handleChange}
-                onCancel={() => navigate(categoryPath.list)}
+                onCancel={() => navigate(tagPath.list)}
             />
         </div>
     )
 }
 
-export default CategoryEdit
+export default TagEdit

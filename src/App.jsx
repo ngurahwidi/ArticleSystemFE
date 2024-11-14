@@ -20,6 +20,7 @@ import categoryPath from "./path/categoryPath.js";
 import CategoryAdd from "./page/category/CategoryAdd.jsx";
 import CategoryEdit from "./page/category/CategoryEdit.jsx";
 import TagAdd from "./page/tag/TagAdd.jsx";
+import TagEdit from "./page/tag/TagEdit.jsx";
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
                       <Route path={articlePath.edit} element={<ArticleEdit />} />
                       <Route path={tagPath.list} element={<Tag/>}/>
                       <Route path={tagPath.add} element={<TagAdd/>}/>
+                      <Route path={tagPath.edit} element={<TagEdit/>}/>
                       <Route path={categoryPath.list} element={<Category/>}/>
                       <Route path={categoryPath.add} element={<CategoryAdd/>}/>
                       <Route path={categoryPath.edit} element={<CategoryEdit/>}/>
