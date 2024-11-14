@@ -1,5 +1,4 @@
 import logo from '../../../assets/image/avatar.svg'
-import BtnDetail from "../../../component/BtnDetail.jsx";
 import BtnEdit from "../../../component/BtnEdit.jsx";
 import BtnDelete from "../../../component/BtnDelete.jsx";
 import {useNavigate} from "react-router-dom";
@@ -56,7 +55,6 @@ const CategoryList = ({ datas, fetchCategory }) => {
                     </td>
                     <td>{data.status.name}</td>
                     <td>
-                        <BtnDetail onClick={() => navigate(`${categoryPath.list}/${data.id}`)}/>
                         <BtnEdit onClick={() => navigate(`${categoryPath.list}/${data.id}/edit`)}/>
                         <BtnDelete onClick={() => handleDelete(data.id)}/>
                     </td>
