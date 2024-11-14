@@ -2,7 +2,6 @@ import THead from "../../component/THead.jsx";
 import CategoryList from "./component/CategoryList.jsx"
 import {useEffect, useState} from "react";
 import categoryService from "../../service/api/categoryService.js";
-import articlePath from "../../path/articlePath.js";
 import {AddCircle} from "iconsax-react";
 import {useNavigate} from "react-router-dom";
 import categoryPath from "../../path/categoryPath.js";
