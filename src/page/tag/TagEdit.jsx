@@ -66,7 +66,8 @@ const TagEdit = () => {
     }, [])
     return (
         <div className='card card-body'>
-            <h1 className={'mb-3 fs-2'}>Edit Tag</h1>
+            <h1 className='mb-3 fs-2'>Edit Tag</h1>
+            <p className='text-danger'>{error}</p>
             <TagForm
                 onSubmit={handleSubmit}
                 name={formRequest.name}

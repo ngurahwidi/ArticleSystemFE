@@ -1,5 +1,4 @@
 import logo from '../../../assets/image/avatar.svg'
-import BtnDetail from "../../../component/BtnDetail.jsx";
 import BtnEdit from "../../../component/BtnEdit.jsx";
 import BtnDelete from "../../../component/BtnDelete.jsx";
 import {useNavigate} from "react-router-dom";
