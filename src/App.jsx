@@ -21,7 +21,6 @@ import CategoryAdd from "./page/category/CategoryAdd.jsx";
 import CategoryEdit from "./page/category/CategoryEdit.jsx";
 import TagAdd from "./page/tag/TagAdd.jsx";
 import TagEdit from "./page/tag/TagEdit.jsx";
-import FormContoh from "./page/FormContoh.jsx";
 
 function App() {
 
@@ -50,7 +49,7 @@ function App() {
               </Route>
               <Route element={<AuthRoute/>}>
                   <Route path="/" element={<Layout/>}>
-                      <Route index element={<FormContoh/>}/>
+                      <Route index element={<Home />}/>
                       <Route path={articlePath.list} element={<Article/>} />
                       <Route path={articlePath.add} element={<ArticleAdd />} />
                       <Route path={articlePath.detail} element={<ArticleDetail />} />

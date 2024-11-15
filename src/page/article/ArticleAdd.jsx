@@ -5,7 +5,7 @@ import articlePath from "../../path/articlePath.js";
 import articleService from "../../service/api/articleService.js";
 import categoryService from "../../service/api/categoryService.js";
 import tagService from "../../service/api/tagService.js";
-import ArticleFormClone from "./component/ArticleFormClone.jsx";
+import ArticleForm from "./component/ArticleForm.jsx";
 
 const ArticleAdd = () => {
     const navigate = useNavigate();
@@ -119,7 +119,7 @@ const ArticleAdd = () => {
     return (
         <div className="form-container">
             <p className='text-danger'>{error}</p>
-            <ArticleFormClone
+            <ArticleForm
                 title={formRequest.title}
                 handleChange={handleChange}
                 description={formRequest.description}
