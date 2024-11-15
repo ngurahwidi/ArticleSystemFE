@@ -33,8 +33,7 @@ const FormContoh = () => {
                 <div className="col-md-4">
                     <div className="form-group mb-4 card card-body">
                         <h1 className="fs-4">Featured Image<span className="required">*</span></h1>
-                        <button type="button" className='btn btn-link featuredImageBtn'>Set Featured Image
-                        </button>
+                        <Input type="file" />
                     </div>
 
                     <div className="form-group mb-4 card card-body">
