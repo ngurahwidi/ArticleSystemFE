@@ -27,25 +27,29 @@ function App() {
   return (
       <BrowserRouter>
           <Routes>
-              <Route
-                  path={loginPath}
-                  element={
-                      <ProtectedRoute>
-                          <Login />
-                      </ProtectedRoute>
-                  }
-              />
-              <Route
-                  path={registerPath}
-                  element={
-                      <ProtectedRoute>
-                          <Register />
-                      </ProtectedRoute>
-                  }
-              />
+              {/*<Route*/}
+              {/*    path={loginPath}*/}
+              {/*    element={*/}
+              {/*        <ProtectedRoute>*/}
+              {/*            <Login />*/}
+              {/*        </ProtectedRoute>*/}
+              {/*    }*/}
+              {/*/>*/}
+              {/*<Route*/}
+              {/*    path={registerPath}*/}
+              {/*    element={*/}
+              {/*        <ProtectedRoute>*/}
+              {/*            <Register />*/}
+              {/*        </ProtectedRoute>*/}
+              {/*    }*/}
+              {/*/>*/}
+              <Route element={<ProtectedRoute/>}>
+                  <Route path={loginPath} element={<Login/>}/>
+                  <Route path={registerPath} element={<Register/>}/>
+              </Route>
               <Route element={<AuthRoute/>}>
                   <Route path="/" element={<Layout/>}>
-                      <Route index element={<Home/>}/>
+                      <Route index element={<Home />}/>
                       <Route path={articlePath.list} element={<Article/>} />
                       <Route path={articlePath.add} element={<ArticleAdd />} />
                       <Route path={articlePath.detail} element={<ArticleDetail />} />

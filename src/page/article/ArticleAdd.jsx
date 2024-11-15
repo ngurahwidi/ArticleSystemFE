@@ -1,11 +1,11 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Swal from "sweetalert2";
-import ArticleForm from "./component/ArticleForm.jsx";
 import articlePath from "../../path/articlePath.js";
 import articleService from "../../service/api/articleService.js";
 import categoryService from "../../service/api/categoryService.js";
 import tagService from "../../service/api/tagService.js";
+import ArticleForm from "./component/ArticleForm.jsx";
 
 const ArticleAdd = () => {
     const navigate = useNavigate();
@@ -13,7 +13,8 @@ const ArticleAdd = () => {
     const [formRequest, setFormRequest] = useState({
         title: '',
         content: '',
-        statusId: '2',
+        statusId: '1',
+        description: '',
         categories: [],
         tags: [],
     })
@@ -116,8 +117,7 @@ const ArticleAdd = () => {
     }, []);
 
     return (
-        <div className='card card-body'>
-            <h1 className='mb-3 fs-2'>Add Article</h1>
+        <div className="form-container">
             <p className='text-danger'>{error}</p>
             <ArticleForm
                 title={formRequest.title}

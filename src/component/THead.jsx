@@ -1,5 +1,5 @@
 const THead = ({ titles = [] }) => (
-    <thead>
+    <thead className='table-light'>
     <tr>
         {titles.map((title, index) => (
             <th key={index}>{title}</th>

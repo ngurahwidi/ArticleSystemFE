@@ -15,7 +15,7 @@ const TagForm = ({onSubmit, name, handleChange, handleIconChange, statusId, onCa
             </div>
 
             <div className='mb-3'>
-                <Label>Name</Label>
+                <Label>Icon</Label>
                 <Input
                     type='file'
                     onChange={handleIconChange}

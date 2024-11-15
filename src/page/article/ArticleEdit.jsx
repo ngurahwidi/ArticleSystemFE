@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import ArticleForm from "./component/ArticleForm.jsx";
 import articlePath from "../../path/articlePath.js";
 import articleService from "../../service/api/articleService.js";
 import categoryService from "../../service/api/categoryService.js";
 import tagService from "../../service/api/tagService.js";
+import ArticleForm from "./component/ArticleForm.jsx";
 
 const ArticleEdit = () => {
     const { id } = useParams();
@@ -91,7 +91,7 @@ const ArticleEdit = () => {
                 title: article.title,
                 description: article.description,
                 content: article.content,
-                statusId: article.status.id,
+                statusId: article.status.id.toString(),
             }))
             setSelectedCategory(article.categories.map(category => ({ value: category.id, label: category.name })));
             setSelectedCategoryIds(article.categories.map(category => category.id));
@@ -143,8 +143,7 @@ const ArticleEdit = () => {
     if (error) return <p>{error}</p>;
 
     return (
-        <div className='card card-body'>
-            <h1 className='mb-4 fs-2'>Edit Article</h1>
+        <div className="form-container">
             <ArticleForm
                 title={formRequest.title}
                 handleChange={handleChange}

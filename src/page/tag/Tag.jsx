@@ -33,9 +33,9 @@ const Tag = () => {
         <div>
             <div className='mb-4'>
                 <button className="btn btn-warning px-4 py-1" onClick={() => navigate(tagPath.add)}><AddCircle
-                    color="#d9e3f0"/></button>
+                    color="#555555"/></button>
             </div>
-            <table className="table table-bordered">
+            <table className="table">
                 <THead titles={['No', 'Name', 'Icon', 'Status', 'Action']}/>
                 <tbody>
                 {error ? (

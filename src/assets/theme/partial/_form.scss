@@ -1,0 +1,20 @@
+.form-container {
+  padding: 20px;
+
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .required {
+    font-size: 0.8rem;
+    color: #dc3545;
+    font-weight: 600;
+    margin-left: 5px;
+  }
+
+  .featuredImageBtn {
+    color: #007bff;
+    text-decoration: underline;
+  }
+}
