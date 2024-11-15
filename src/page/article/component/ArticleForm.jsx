@@ -66,7 +66,7 @@ const ArticleForm = ({
                 </div>
 
                 <div className="form-group mb-4 card card-body">
-                    <h1 className="fs-4">Blog Properties</h1>
+                    <h1 className="fs-4">Article Properties</h1>
                     <div className='mb-2'>
                         <Label className="fw-normal mb-2">Status<span className="required">*</span></Label>
                         <div className="form-check">
