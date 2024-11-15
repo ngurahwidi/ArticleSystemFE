@@ -226,10 +226,10 @@ const Article = () => {
 
             <div className='mb-4'>
                 <button className="btn btn-warning px-4 py-1" onClick={() => navigate(articlePath.add)}><AddCircle
-                    color="#d9e3f0"/></button>
+                    color="#555555"/></button>
             </div>
 
-            <table className="table table-bordered">
+            <table className="table">
                 <THead titles={["No", "Feature Image", "Title", "Description", "Status", "Popular", "Action"]}/>
                 <tbody>
                 {error ? (

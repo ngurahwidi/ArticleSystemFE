@@ -1,116 +1,121 @@
 import Label from "../../../component/Label.jsx";
 import Input from "../../../component/Input.jsx";
+import TextArea from "../../../component/TextArea.jsx";
 import Select from "react-select";
 
 const ArticleForm = ({
-                         title,
-                         handleChange,
-                         description,
-                         content,
-                         handleImageChange,
-                         handleGalleryChange,
-                         statusId,
-                         categories,
-                         selectedCategory,
-                         handleCategoryChange,
-                         tags,
-                         selectedTag,
-                         handleTagChange,
-                         onSubmit,
-                         onCancel,
-                     }) => {
+                            title,
+                            handleChange,
+                            description,
+                            content,
+                            handleImageChange,
+                            statusId,
+                            selectedCategory,
+                            handleCategoryChange,
+                            categories,
+                            selectedTag,
+                            handleTagChange,
+                            tags,
+                            handleGalleryChange,
+                            onSubmit,
+                            onCancel,
+                          }) => {
     return (
+        <form className='row' onSubmit={onSubmit}>
+            <div className='col-md-8 mb-3 card card-body'>
+                <h1 className='mb-4 fs-4'>Article</h1>
+                <div className='form-group'>
+                    <Label className="fw-bold mb-2">Title<span className="required">*</span></Label>
+                    <Input
+                        type='text'
+                        name='title'
+                        placeholder='Write down the title here'
+                        value={title}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-        <form onSubmit={onSubmit}>
-            <div className='mb-3'>
-                <Label>Title</Label>
-                <Input
-                    type='text'
-                    name='title'
-                    value={title}
-                    onChange={handleChange}
-                    required
-                />
+                <div className="form-group">
+                    <Label className="fw-bold mb-2">Description<span className="required">*</span></Label>
+                    <TextArea
+                        name="description"
+                        row="3"
+                        placeholder="Write down the description here"
+                        value={description}
+                        onChange={handleChange}
+                        required></TextArea>
+                </div>
+
+                <div className="form-group">
+                    <Label className="fw-bold mb-2">Content<span className="required">*</span></Label>
+                    <TextArea
+                        name="content"
+                        row="6"
+                        placeholder="Content here"
+                        value={content}
+                        onChange={handleChange}
+                        required></TextArea>
+                </div>
             </div>
-            <div className='mb-3'>
-                <Label>Description</Label>
-                <Input
-                    type='text'
-                    name='description'
-                    value={description}
-                    onChange={handleChange}
-                    required
-                />
+
+            <div className="col-md-4">
+                <div className="form-group mb-4 card card-body">
+                    <h1 className="fs-4">Featured Image<span className="required">*</span></h1>
+                    <Input type="file" onChange={handleImageChange} />
+                </div>
+
+                <div className="form-group mb-4 card card-body">
+                    <h1 className="fs-4">Article Properties</h1>
+                    <div className='mb-2'>
+                        <Label className="fw-normal mb-2">Status<span className="required">*</span></Label>
+                        <div className="form-check">
+                            <input type="radio" name="statusId" value="1" className="form-check-input" checked={statusId === "1"} onChange={handleChange} />
+                            <Label>Draft</Label>
+                        </div>
+                        <div className="form-check">
+                            <input type="radio" name="statusId" value="2" className="form-check-input" checked={statusId === "2"} onChange={handleChange} />
+                            <Label>Publish</Label>
+                        </div>
+                        <div className="form-check">
+                            <input type="radio" name="statusId" value="3" className="form-check-input" checked={statusId === "3"} onChange={handleChange} />
+                            <Label>Archived</Label>
+                        </div>
+                    </div>
+
+                    <Label className="fw-normal mb-2">Category<span className="required">*</span></Label>
+                    <Select
+                        value={selectedCategory}
+                        onChange={handleCategoryChange}
+                        options={categories}
+                        placeholder='Select Category'
+                        className='mb-2'
+                        isMulti
+                    />
+
+                    <Label className="fw-normal mb-2">Tag</Label>
+                    <Select
+                        value={selectedTag}
+                        onChange={handleTagChange}
+                        options={tags}
+                        placeholder='Select Tag'
+                        className='mb-2'
+                        isMulti
+                    />
+                </div>
+
+                <div className="form-group card card-body">
+                    <h1 className="fs-4">Page Attributes</h1>
+                    <Label className="fw-normal mb-2">Gallery</Label>
+                    <Input type="file" onChange={handleGalleryChange} multiple/>
+                </div>
             </div>
-            <div className='mb-3'>
-                <Label>Content</Label>
-                <Input
-                    type='text'
-                    name='content'
-                    value={content}
-                    onChange={handleChange}
-                    required
-                />
+
+            <div className="col-12 mt-4 d-flex justify-content-end gap-3">
+                <button type="button" className="btn btn-outline-warning" onClick={onCancel}>Cancel</button>
+                <button type="submit" className="btn btn-warning">Save Article</button>
             </div>
-            <div className='mb-3'>
-                <Label>Feature Image</Label>
-                <Input type='file' onChange={handleImageChange} />
-            </div>
-            <div className='mb-3'>
-                <Label>Gallery</Label>
-                <input
-                    type='file'
-                    className='form-control'
-                    onChange={handleGalleryChange}
-                    multiple
-                />
-            </div>
-            <div className='mb-3'>
-                <Label>Status</Label>
-                <select
-                    className='form-control'
-                    name='statusId'
-                    value={statusId}
-                    onChange={handleChange}
-                    required
-                >
-                    <option value='1'>Draft</option>
-                    <option value='2'>Publish</option>
-                    <option value='3'>Archived</option>
-                </select>
-            </div>
-            <div className='mb-3'>
-                <Label>Category</Label>
-                <Select
-                    value={selectedCategory}
-                    onChange={handleCategoryChange}
-                    options={categories}
-                    placeholder='Select Category'
-                    isMulti
-                />
-            </div>
-            <div className='mb-3'>
-                <Label>Tag</Label>
-                <Select
-                    value={selectedTag}
-                    onChange={handleTagChange}
-                    options={tags}
-                    placeholder='Select Tag'
-                    isMulti
-                />
-            </div>
-            <button
-                className='btn btn-outline-warning'
-                type='button'
-                onClick={onCancel}
-            >
-                Cancel
-            </button>
-            <button type='submit' className='btn btn-warning ms-2'>
-                Save Article
-            </button>
         </form>
-    );
-};
-
-export default ArticleForm;
+    )
+}
+export default ArticleForm

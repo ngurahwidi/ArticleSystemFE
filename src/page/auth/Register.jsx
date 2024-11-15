@@ -108,7 +108,7 @@ const Register = () => {
                     </form>
                 </div>
                 <div className="image-container align-items-center rounded-5 m-3 overflow-hidden position-relative">
-                <AuthImage/>
+                    <AuthImage/>
                     <AuthImageContent/>
                 </div>
             </div>
