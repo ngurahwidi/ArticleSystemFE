@@ -14,6 +14,7 @@ const ArticleAdd = () => {
         title: '',
         content: '',
         statusId: '2',
+        description: '',
         categories: [],
         tags: [],
     })
