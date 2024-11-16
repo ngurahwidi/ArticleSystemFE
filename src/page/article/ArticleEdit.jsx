@@ -36,6 +36,10 @@ const ArticleEdit = () => {
         })
     }
 
+    const handleContentChange = (content) => {
+        setFormRequest({ ...formRequest, content });
+    };
+
     const handleTagChange = (selectedOptions) => {
         const tagIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
         setSelectedTag(selectedOptions || []);
@@ -147,6 +151,7 @@ const ArticleEdit = () => {
             <ArticleForm
                 title={formRequest.title}
                 handleChange={handleChange}
+                handleContentChange={handleContentChange}
                 description={formRequest.description}
                 content={formRequest.content}
                 featuredImage={formRequest.featuredImage}

@@ -35,6 +35,10 @@ const ArticleAdd = () => {
         })
     }
 
+    const handleContentChange = (content) => {
+        setFormRequest({ ...formRequest, content });
+    };
+
     const handleTagChange = (selectedOptions) => {
         const tagIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
         setSelectedTag(selectedOptions || []);
@@ -121,6 +125,7 @@ const ArticleAdd = () => {
             <p className='text-danger'>{error}</p>
             <ArticleForm
                 title={formRequest.title}
+                handleContentChange={handleContentChange}
                 handleChange={handleChange}
                 description={formRequest.description}
                 content={formRequest.content}
