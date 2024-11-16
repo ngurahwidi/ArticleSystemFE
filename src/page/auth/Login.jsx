@@ -26,10 +26,10 @@ const Login = () => {
 
     return (
         <>
-            <div className="row min-vh-100">
-                <div className="auth-containerb col-md-5">
-                    <div className="w-100 h-100 d-flex flex-wrap">
-                        <div className="px-5">
+            <div className="row min-vh-100 bg-white">
+                <div className="col-md-5">
+                    <div className="w-100 d-flex flex-wrap">
+                        <div className="px-5 mx-5">
                             <div className="mt-3 ms-5 mb-5 pt-5">
                                 <img src={logo} alt="logo"/>
                             </div>
@@ -65,7 +65,7 @@ const Login = () => {
                     </div>
                 </div>
 
-                <div className="image-containerp col-md-7 position-relative p-4">
+                <div className="col-md-7 position-relative p-4">
                     <div className="w-100 h-100 position-relative overflow-hidden rounded-4">
                         <AuthImage/>
                         <AuthImageContent/>

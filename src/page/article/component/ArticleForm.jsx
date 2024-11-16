@@ -2,10 +2,12 @@ import Label from "../../../component/Label.jsx";
 import Input from "../../../component/Input.jsx";
 import TextArea from "../../../component/TextArea.jsx";
 import Select from "react-select";
+import { Editor } from "@tinymce/tinymce-react";
 
 const ArticleForm = ({
                             title,
                             handleChange,
+                            handleContentChange,
                             description,
                             content,
                             handleImageChange,
@@ -49,13 +51,22 @@ const ArticleForm = ({
 
                 <div className="form-group">
                     <Label className="fw-bold mb-2">Content<span className="required">*</span></Label>
-                    <TextArea
-                        name="content"
-                        row="6"
-                        placeholder="Content here"
+                    <Editor
+                        apiKey={import.meta.env.VITE_TINY_API_KEY}
                         value={content}
-                        onChange={handleChange}
-                        required></TextArea>
+                        onEditorChange={handleContentChange}
+                        init={{
+                            height: 300,
+                            menubar: false,
+                            plugins: [
+                                "advlist autolink lists link image charmap print preview anchor",
+                                "searchreplace visualblocks code fullscreen",
+                                "insertdatetime media table paste code help wordcount",
+                            ],
+                            toolbar:
+                            "undo redo | styles | fontsize | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor"
+                        }}
+                    />
                 </div>
             </div>
 
