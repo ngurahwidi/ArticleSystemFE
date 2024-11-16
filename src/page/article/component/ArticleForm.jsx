@@ -64,9 +64,7 @@ const ArticleForm = ({
                                 "insertdatetime media table paste code help wordcount",
                             ],
                             toolbar:
-                                "undo redo | formatselect | bold italic backcolor | \
-                                alignleft aligncenter alignright alignjustify | \
-                                bullist numlist outdent indent | removeformat | help",
+                            "undo redo | styles | fontsize | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media | forecolor"
                         }}
                     />
                 </div>
