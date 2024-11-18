@@ -19,7 +19,7 @@ const ArticleDetail = () => {
 
     useEffect(() => {
         fetchArticle();
-    }, [id])
+    }, [])
     return (
         <>
             <div>
@@ -42,7 +42,7 @@ const ArticleDetail = () => {
             </div>
             <div className="mt-5 ps-4">
                 <div style={{maxHeight: "85vh"}}
-                     className='mb-5 w-100 overflow-hidden rounded-5 position-relative'>
+                     className='mb-5 w-100 overflow-hidden rounded-4 position-relative'>
                     <img style={{height: "300px", width: "500px"}} src={`http://127.0.0.1:8000${article.featuredImage}`}
                          alt='featured image' className='h-100 w-100 position-relative'/>
                 </div>

@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Swal from "sweetalert2";
 import articlePath from "../../path/articlePath.js";
 import articleService from "../../service/api/articleService.js";
@@ -24,6 +24,7 @@ const ArticleAdd = () => {
     const [selectedTag, setSelectedTag] = useState([]);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
     const [selectedTagIds, setSelectedTagIds] = useState([]);
+    const fileInputRef = useRef(null);
 
     const handleChange = (e) => {
         const {name, value} = e.target
@@ -33,6 +34,14 @@ const ArticleAdd = () => {
             newState[name] = value;
             return newState;
         })
+    }
+
+    const handleButtonClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        } else {
+            console.error('fileInputRef is null');
+        }
     }
 
     const handleContentChange = (content) => {
@@ -52,7 +61,14 @@ const ArticleAdd = () => {
     };
 
     const handleImageChange = (e) => {
-        setFeaturedImage(e.target.files[0]);
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setFeaturedImage(imageUrl);
+        } else {
+            setFeaturedImage(null);
+        }
+        // setFeaturedImage(URL.createObjectURL(e.target.files[0]));
     }
 
     const handleGalleryChange = (e) => {
@@ -137,7 +153,10 @@ const ArticleAdd = () => {
                 handleCategoryChange={handleCategoryChange}
                 tags={formRequest.tags}
                 selectedTag={selectedTag}
+                featuredImage={featuredImage}
                 handleTagChange={handleTagChange}
+                handleButtonClick={handleButtonClick}
+                fileInputRef={fileInputRef}
                 onSubmit={handleSubmit}
                 onCancel={() => navigate(articlePath.list)}/>
         </div>

@@ -3,6 +3,8 @@ import Input from "../../../component/Input.jsx";
 import TextArea from "../../../component/TextArea.jsx";
 import Select from "react-select";
 import { Editor } from "@tinymce/tinymce-react";
+import InputRef from "../../../component/InputRef.jsx";
+import { Gallery } from "iconsax-react";
 
 const ArticleForm = ({
                             title,
@@ -10,6 +12,7 @@ const ArticleForm = ({
                             handleContentChange,
                             description,
                             content,
+                            featuredImage,
                             handleImageChange,
                             statusId,
                             selectedCategory,
@@ -19,6 +22,8 @@ const ArticleForm = ({
                             handleTagChange,
                             tags,
                             handleGalleryChange,
+                            fileInputRef,
+                            handleButtonClick,
                             onSubmit,
                             onCancel,
                           }) => {
@@ -31,7 +36,8 @@ const ArticleForm = ({
                     <Input
                         type='text'
                         name='title'
-                        placeholder='Write down the title here'
+                        className="form-control fw-normal"
+                        placeholder='Article Title'
                         value={title}
                         onChange={handleChange}
                         required
@@ -73,7 +79,15 @@ const ArticleForm = ({
             <div className="col-md-4">
                 <div className="form-group mb-4 card card-body">
                     <h1 className="fs-4">Featured Image<span className="required">*</span></h1>
-                    <Input type="file" onChange={handleImageChange} />
+                    <button type="button" className="btn btn-link text-decoration-none text-start p-0 gap-2" onClick={handleButtonClick}><span className="pe-1"><Gallery size="20" color="#0d6efd"/></span>Set Featured Image
+                    </button>
+                    <InputRef type="file" onChange={handleImageChange} style={{display: 'none'}} ref={fileInputRef}/>
+                    {featuredImage && (
+                        <div className="mt-3">
+                            <img src={featuredImage} alt="Featured"
+                                 style={{width: '100%', maxHeight: '300px', objectFit: 'cover'}}/>
+                        </div>
+                    )}
                 </div>
 
                 <div className="form-group mb-4 card card-body">
@@ -101,16 +115,18 @@ const ArticleForm = ({
                         options={categories}
                         placeholder='Select Category'
                         className='mb-2'
+                        required
                         isMulti
                     />
 
-                    <Label className="fw-normal mb-2">Tag</Label>
+                    <Label className="fw-normal mb-2">Tag<span className="required">*</span></Label>
                     <Select
                         value={selectedTag}
                         onChange={handleTagChange}
                         options={tags}
                         placeholder='Select Tag'
                         className='mb-2'
+                        required
                         isMulti
                     />
                 </div>
