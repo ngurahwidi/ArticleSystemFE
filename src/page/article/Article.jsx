@@ -2,8 +2,6 @@ import THead from "../../component/THead.jsx";
 import ArticleList from "./component/ArticleList.jsx";
 import {useEffect, useState} from "react";
 import { format, parseISO, isValid } from 'date-fns';
-import Label from "../../component/Label.jsx";
-import Select from "react-select";
 import {useNavigate} from "react-router-dom";
 import {AddCircle} from "iconsax-react";
 import articlePath from "../../path/articlePath.js";
