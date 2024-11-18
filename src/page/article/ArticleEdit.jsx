@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import Swal from "sweetalert2";
 import articlePath from "../../path/articlePath.js";
 import articleService from "../../service/api/articleService.js";
@@ -25,6 +25,7 @@ const ArticleEdit = () => {
     const [selectedTag, setSelectedTag] = useState([]);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
     const [selectedTagIds, setSelectedTagIds] = useState([]);
+    const fileInputRef = useRef(null);
 
     const handleChange = (e) => {
         const {name, value} = e.target
@@ -34,6 +35,14 @@ const ArticleEdit = () => {
             newState[name] = value;
             return newState;
         })
+    }
+
+    const handleButtonClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        } else {
+            console.log("file input ref is null")
+        }
     }
 
     const handleContentChange = (content) => {
@@ -53,7 +62,11 @@ const ArticleEdit = () => {
     };
 
     const handleImageChange = (e) => {
-        setFeaturedImage(e.target.files[0]);
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setFeaturedImage(imageUrl);
+        }
     };
 
     const handleGalleryChange = (e) => {
@@ -97,10 +110,15 @@ const ArticleEdit = () => {
                 content: article.content,
                 statusId: article.status.id.toString(),
             }))
+            if (article.featuredImage) {
+                const url = "http://127.0.0.1:8000"
+                setFeaturedImage(`${url}${article.featuredImage}`);
+            }
             setSelectedCategory(article.categories.map(category => ({ value: category.id, label: category.name })));
             setSelectedCategoryIds(article.categories.map(category => category.id));
             setSelectedTag(article.tags.map(tag => ({ value: tag.id, label: tag.name })));
             setSelectedTagIds(article.tags.map(tag => tag.id));
+            console.log(response);
         } catch (err) {
             setError(err.response.data.status.message);
         }
@@ -154,9 +172,8 @@ const ArticleEdit = () => {
                 handleContentChange={handleContentChange}
                 description={formRequest.description}
                 content={formRequest.content}
-                featuredImage={formRequest.featuredImage}
+                featuredImage={featuredImage}
                 handleImageChange={handleImageChange}
-                galleries={formRequest.galleries}
                 handleGalleryChange={handleGalleryChange}
                 statusId={formRequest.statusId}
                 categories={formRequest.categories}
@@ -164,6 +181,8 @@ const ArticleEdit = () => {
                 handleCategoryChange={handleCategoryChange}
                 tags={formRequest.tags}
                 selectedTag={selectedTag}
+                handleButtonClick={handleButtonClick}
+                fileInputRef={fileInputRef}
                 handleTagChange={handleTagChange}
                 onSubmit={handleSubmit}
                 onCancel={() => navigate(articlePath.list)}
