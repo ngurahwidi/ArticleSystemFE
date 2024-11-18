@@ -10,6 +10,7 @@ import articlePath from "../../path/articlePath.js";
 import articleService from "../../service/api/articleService.js";
 import categoryService from "../../service/api/categoryService.js";
 import tagService from "../../service/api/tagService.js";
+import ArticleFilter from "./component/ArticleFilter.jsx";
 
 const Article = () => {
     const navigate = useNavigate();
@@ -118,111 +119,22 @@ const Article = () => {
 
     return (
         <>
-            <div className="mb-5">
-                <div className="row mb-4">
-                    <div className="col">
-                        <Label>Search</Label>
-                        <input
-                            className="form-control"
-                            placeholder="Type to search..."
-                            name="search"
-                            value={filters.search}
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    <div className="col">
-                        <Label>Status</Label>
-                        <select
-                            className="form-control text-secondary"
-                            value={filters.statusId}
-                            name='statusId'
-                            onChange={handleChange}
-                        >
-                            <option value="">Select Status Option</option>
-                            <option value="1">Draft</option>
-                            <option value="2">Publish</option>
-                            <option value="3">Archived</option>
-                        </select>
-                    </div>
-
-                    <div className='col'>
-                        <Label>Tag</Label>
-                        <Select
-                            value={selectedTags}
-                            onChange={handleTagChange}
-                            options={tags}
-                            placeholder='Tag'
-                            isMulti
-                        />
-                    </div>
-
-                    <div className="col">
-                        <Label>Category</Label>
-                        <Select
-                            options={categories}
-                            value={selectedCategory}
-                            onChange={handleCategoryChange}
-                            placeholder='Category'
-                            isMulti
-                        />
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className="col">
-                        <Label>Sort By Date</Label>
-                        <select
-                            className="form-control text-secondary"
-                            name='sortByDate'
-                            value={filters.sortByDate}
-                            onChange={handleChange}
-                        >
-                            <option value="">Select Sort Date Option</option>
-                            <option value="asc">Ascending</option>
-                            <option value="desc">Descending</option>
-                        </select>
-                    </div>
-
-                    <div className="col">
-                        <Label>Sort By Popular</Label>
-                        <select
-                            className="form-control text-secondary"
-                            name='sortByPopular'
-                            value={filters.sortByPopular}
-                            onChange={handleChange}
-                        >
-                            <option value="">Select Popularity Option</option>
-                            <option value="desc">Most Popular</option>
-                            <option value="asc">Least Popular</option>
-                        </select>
-                    </div>
-
-                    <div className="col">
-                        <Label>From Date</Label>
-                        <input
-                            type="date"
-                            name='fromDate'
-                            className="form-control text-secondary"
-                            value={filters.fromDate}
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    <div className="col">
-                        <Label>To Date</Label>
-                        <input
-                            type="date"
-                            name='toDate'
-                            className="form-control text-secondary"
-                            value={filters.toDate}
-                            onChange={handleChange}
-                        />
-                    </div>
-                </div>
-                <button type='button' onClick={fetchArticles}
-                        className='btn btn-sm btn-outline-warning px-4 py-1 mt-3'>Search
-                </button>
-            </div>
+            <ArticleFilter
+                search={filters.search}
+                handleChange={handleChange}
+                statusId={filters.statusId}
+                selectedTags={selectedTags}
+                handleTagChange={handleTagChange}
+                tags={tags}
+                categories={categories}
+                selectedCategory={selectedCategory}
+                handleCategoryChange={handleCategoryChange}
+                sortByDate={filters.sortByDate}
+                sortByPopular={filters.sortByPopular}
+                fromDate={filters.fromDate}
+                toDate={filters.toDate}
+                fetchArticles={fetchArticles}
+            />
 
             <div className='mb-4'>
                 <button className="btn btn-warning px-4 py-1" onClick={() => navigate(articlePath.add)}><AddCircle
